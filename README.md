@@ -2,28 +2,32 @@
 
 ## A learning tool for the Simplex Algorithm from Linear Programming
 
+All **bolded** terms are defined in a glossary at the bottom of this page.
+
 This application is intended to provide a resource for students studying linear programming (at UBC this is MATH 340) to step through and check their work at different steps of the "**Simplex Algorithm**" (SA). For those unfamiliar with linear programming, many problems in real life can be restated in the form of *"maximize a linear function* $f$ *subject to some number of linear constraints"*. See the appendix for a simple concrete example of this form of problem.
 
-My motivation for creating this project is that I found the available online resources for solving *linear programs* (LPs) to be rather lackluster.
+My motivation for creating this project is that I found the available online resources for solving **linear programs** (LPs) to be rather lackluster.
 - Many of them were able to offer a total solution without stepping capability, but given the number of arithmetic operations in the SA, stepping through would be an incredibly useful feature for checking work. 
-- Despite the fact that the SA is an algorithm, there are some degrees of freedom in what *pivot rule* is being used at each step of the algorithm; no online resources offer satisfactory features in this aspect. 
-- There are many different ways that the steps of the algorithm can be represented (MANY different variations of *tableau* or matrix). All online solvers offer only 1 representation each, making their usage cumbersome if the tableau used in your classroom setting is different from the one in the solver.
+- Despite the fact that the SA is an algorithm, there are some degrees of freedom in what **pivot rule** is being used at each step of the algorithm; no online resources offer satisfactory features in this aspect. 
+- There are many different ways that the steps of the algorithm can be represented (MANY different variations of **tableau** or matrix). All online solvers offer only 1 representation each, making their usage cumbersome if the tableau used in your classroom setting is different from the one in the solver.
 
-So, my project is to build a robust learning tool for students studying linear programming. Its features include stepping capability through the simplex algorithm according to the user's choice of *pivot rule* and support for multiple common tableau/matrix formats.
+So, my project is to build a robust learning tool for students studying linear programming. Its features include stepping capability through the simplex algorithm according to the user's choice of **pivot rule** and support for multiple common tableau/matrix formats.
 
 ## User Stories
 
+All **bolded** terms are defined in a glossary at the bottom of this page.
+
 As a user, I want to be able to:
-- Initialize the number (arbitrary) of variables in my linear program (LP)
-- Set the coefficients of my objective function
+- Initialize the number (arbitrary) of variables in my **linear program** (LP)
+- Set the coefficients of my **objective function**
 - Add constraints to my LP (arbitrary number)
-- Set the coefficients of each constraints
-- Check if a given solution satisfies all constraints
-- Check the objective value of a given solution
-- Solve my LP by manually performing pivoting steps
+- Set the coefficients of each constraint
+- Check if a given solution is **feasible** (satisfies all constraints)
+- Check the objective function value of a given solution
+- Solve my LP by manually performing **pivot** steps
 - Solve my LP by algorithmically performing pivoting steps
 - View a list of previous pivoting states (steps in solving)
-- Check if my LP has been solved
+- Check if my LP has been solved (optimal)
 
 ## Appendix
 
@@ -42,4 +46,21 @@ Finally, there are the implicit constraints of non-negativity:
 $$x,y \geq 0$$
 
 This is just a simple example of a problem faced in linear programming, but in general, there can be an arbitrary number of variables and constraints.
- 
+
+## Glossary of Terms
+
+**Linear Program/LP** - An objective function in $n$ variables together with a set of $m$ constraints. Broadly speaking, an LP is a mathematical model for a linear optimization problem.
+
+**Objective function** - A linear function in $n$ variables that is intended to be maximized (or minimized). 
+
+**Simplex Algorithm/SA** - A family of methods for solving LPs by **pivot** steps according to some **pivot rule**.
+
+**Tableau** - Each step of the SA can be represented as a matrix. A tableau is just a way to write the information in that matrix so that it is easier for a reader to understand. It usually takes the form of a labeled rectangular table.
+
+**Pivot** - A sequence of matrix operations performed on the matrix representation of an LP to progress (ideally) towards a solution. Each pivot is not necessarily strictly determined, depending on the **pivot rule** used.
+
+**Pivot rule** - A method used to choose the pivot at each step of the SA. There are a variety of pivot rules, with different pros and cons (computational cost, upper bound on pivots needed, preventing cycling).
+
+**Feasible/Infeasible** - A solution (allocation of variables) is feasible if it satisfies all constraints. Otherwise, it is infeasible.
+
+**Optimal solution** - The allocation of variables that maximizes the objective function while remaining feasible.
