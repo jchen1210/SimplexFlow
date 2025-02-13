@@ -1,5 +1,7 @@
 package model;
 
+import model.ObjectiveFunction;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
