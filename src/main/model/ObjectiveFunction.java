@@ -28,6 +28,13 @@ public class ObjectiveFunction {
         
     }
 
+    // REQUIRES: solution.length = numVariables
+    // EFFECTS: returns the value of a given solution in the objective function
+    public double computeValue(double[] solution) {
+        return 0;
+    }
+
+
     // EFFECTS: returns a string representation of objective function
     public String toString() {
         return "";

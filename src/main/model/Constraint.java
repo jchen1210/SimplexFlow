@@ -43,7 +43,7 @@ public class Constraint {
     }
 
     // EFFECTS: returns a string representation of constraint
-    public String objFToString() {
+    public String constraintToString() {
         return "";
     }
 
