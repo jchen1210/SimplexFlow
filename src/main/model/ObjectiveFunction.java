@@ -28,6 +28,11 @@ public class ObjectiveFunction {
         
     }
 
+    // EFFECTS: returns a string representation of objective function
+    public String toString() {
+        return "";
+    }
+
     public int getNumVariables() {
         return numVariables;
     }

@@ -54,6 +54,13 @@ public class LinearProgram {
         return 0;
     }
 
+    // EFFECTS: returns a list of strings, one for each added constraint, and one additional string that
+    // represents the non-negativity constraints on each variable as the final item in the output list
+    public ArrayList<String> constraintsToStrings() {
+        ArrayList<String> output = new ArrayList<String>();
+        return output;
+    }
+
 
     public ArrayList<Constraint> getConstraints() {
         return constraints;
@@ -63,7 +70,7 @@ public class LinearProgram {
         return numVariables;
     }
 
-    public ObjectiveFunction getObjectiveFunction() {
+    public ObjectiveFunction getObjF() {
         return objectiveFunction;
     }
 }

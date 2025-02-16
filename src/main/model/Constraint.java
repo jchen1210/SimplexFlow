@@ -42,6 +42,11 @@ public class Constraint {
         return coefficients;
     }
 
+    // EFFECTS: returns a string representation of constraint
+    public String objFToString() {
+        return "";
+    }
+
     public double getConstantTerm() {
         return constantTerm;
     }
