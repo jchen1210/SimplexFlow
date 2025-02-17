@@ -59,7 +59,7 @@ public class TestSolutionState {
     }
 
     @Test
-    public void testConstructor() {
+    public void testConstructFromLP() {
         double[][] expectedTableau = {
                 { 1, 2, 1, 0, 6 },
                 { 2, 1, 0, 1, 8 },
@@ -69,7 +69,7 @@ public class TestSolutionState {
         assertEquals(2, ss1.getNumConstraints());
         double[][] t = ss1.getTableau();
         assertTrue(Arrays.deepEquals(expectedTableau, t));
-        assertTrue(ss1.getPrevStates().isEmpty());
+        assertTrue(ss1.getPrevTableaus().isEmpty());
         assertTrue(ss1.getPrevPivots().isEmpty());
     }
 
@@ -130,35 +130,42 @@ public class TestSolutionState {
         assertArrayEquals(correctPivot, ss1.suggestDantzigPivot());
     }
 
-    @SuppressWarnings("methodlength")
+    @Test
+    public void testCopyTableau() {
+        double[][] expectedTableau = {
+            { 1, 2, 1, 0, 6 },
+            { 2, 1, 0, 1, 8 },
+            { 3, 2, 0, 0, -1 }
+        };
+    double[][] t = SolutionState.copyTableau(expectedTableau);
+
+    assertTrue(Arrays.deepEquals(expectedTableau, t));
+    assertFalse(t == expectedTableau);
+    }
+
     @Test
     public void testPivot() {
-        SolutionState ssP = ss1.pivot(1, 2);
-        int[] pivotIndices = {1, 2};
+        double[][] oldTableauReference = ss1.getTableau();
+        double[][] oldTableauEntries = {
+            { 1, 2, 1, 0, 6 },
+            { 2, 1, 0, 1, 8 },
+            { 3, 2, 0, 0, -1 }
+        };
+        ss1.pivot(1, 2);
+        int[] pivotIndices = { 1, 2 };
 
         double[][] expectedTableau = {
                 { 0, 3 / 2, 1, -1 / 2, 2 },
                 { 1, 1 / 2, 0, 1 / 2, 4 },
                 { 0, 1 / 2, 0, -3 / 2, -12 }
         };
-        assertEquals(2, ssP.getNumVariables());
-        assertEquals(2, ssP.getNumConstraints());
-        assertTrue(Arrays.deepEquals(expectedTableau, ssP.getTableau()));
-        assertEquals(1, ssP.getPrevPivots().size());
-        assertArrayEquals(pivotIndices, ssP.getPrevPivots().get(0));
-        assertEquals(1, ssP.getPrevStates().size());
-        assertEquals(ss1, ssP.getPrevStates().get(0));
+        assertTrue(Arrays.deepEquals(expectedTableau, ss1.getTableau()));
+        assertEquals(1, ss1.getPrevPivots().size());
+        assertArrayEquals(pivotIndices, ss1.getPrevPivots().get(0));
 
-        double[][] oldTableau = {
-                { 1, 2, 1, 0, 6 },
-                { 2, 1, 0, 1, 8 },
-                { 3, 2, 0, 0, -1 }
-        };
-        assertEquals(2, ss1.getNumVariables());
-        assertEquals(2, ss1.getNumConstraints());
-        assertTrue(Arrays.deepEquals(oldTableau, ss1.getTableau()));
-        assertTrue(ss1.getPrevStates().isEmpty());
-        assertTrue(ss1.getPrevPivots().isEmpty());
+        assertEquals(1, ss1.getPrevTableaus().size());
+        assertFalse(oldTableauReference == ss1.getPrevTableaus().get(0));
+        assertTrue(Arrays.deepEquals(oldTableauEntries, ss1.getPrevTableaus().get(0)));
     }
 
     @Test
