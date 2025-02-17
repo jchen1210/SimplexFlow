@@ -7,7 +7,7 @@ import static org.junit.Assert.assertFalse;
 
 import java.util.Arrays;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
 public class TestSolutionState {
@@ -17,19 +17,15 @@ public class TestSolutionState {
     private Constraint c2;
     private Constraint c3;
     private Constraint c4;
-    private Constraint c5;
     private ObjectiveFunction objF1;
-    private ObjectiveFunction objF2;
     private SolutionState ss1;
     private SolutionState ssEmpty;
     private double delta;
 
-    @SuppressWarnings("methodlength")
     @BeforeEach
     public void runBefore() {
         delta = 0.0001;
 
-        lp1 = new LinearProgram(2);
         c1 = new Constraint(2);
         c2 = new Constraint(2);
         objF1 = new ObjectiveFunction(2);
@@ -45,6 +41,7 @@ public class TestSolutionState {
         objF1.setCoefficients(coeffs3);
         objF1.setConstantTerm(1);
 
+        lp1 = new LinearProgram(2);
         lp1.setObjF(objF1);
         lp1.addConstraint(c1);
         lp1.addConstraint(c2);
@@ -54,21 +51,15 @@ public class TestSolutionState {
         lp2 = new LinearProgram(2);
         c3 = new Constraint(2);
         c4 = new Constraint(2);
-        c5 = new Constraint(2);
-        objF2 = new ObjectiveFunction(2);
 
-        lp2.setObjF(objF2);
         lp2.addConstraint(c3);
         lp2.addConstraint(c4);
-        lp2.addConstraint(c5);
 
         ssEmpty = new SolutionState(lp2);
     }
 
     @Test
     public void testConstructor() {
-        ss1 = new SolutionState(lp1);
-
         double[][] expectedTableau = {
                 { 1, 2, 1, 0, 6 },
                 { 2, 1, 0, 1, 8 },
@@ -76,7 +67,8 @@ public class TestSolutionState {
         };
         assertEquals(2, ss1.getNumVariables());
         assertEquals(2, ss1.getNumConstraints());
-        assertTrue(Arrays.deepEquals(expectedTableau, ss1.getTableau()));
+        double[][] t = ss1.getTableau();
+        assertTrue(Arrays.deepEquals(expectedTableau, t));
         assertTrue(ss1.getPrevStates().isEmpty());
         assertTrue(ss1.getPrevPivots().isEmpty());
     }
