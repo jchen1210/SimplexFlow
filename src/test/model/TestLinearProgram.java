@@ -2,17 +2,16 @@ package model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.util.ArrayList;
-
-import static org.junit.Assert.assertFalse;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestLinearProgram {
     private LinearProgram lp2;
-    private LinearProgram lp5;
     private Constraint testC1;
     private Constraint testC2;
     private Constraint testC3;
@@ -21,7 +20,6 @@ public class TestLinearProgram {
     @BeforeEach
     public void runBefore() {
         lp2 = new LinearProgram(2);
-        lp5 = new LinearProgram(5);
         testC1 = new Constraint(2);
         testC2 = new Constraint(2);
         testC3 = new Constraint(2);
@@ -32,8 +30,11 @@ public class TestLinearProgram {
     public void testConstructor() {
         assertEquals(2, lp2.getNumVariables());
 
-        ObjectiveFunction zeroObjF = new ObjectiveFunction(2);
-        assertEquals(zeroObjF, lp2.getObjF());
+        ObjectiveFunction testObjF = lp2.getObjF();
+        double[] twoZeroes = new double[2];
+        assertEquals(2, testObjF.getNumVariables());
+        assertArrayEquals(twoZeroes, testObjF.getCoefficients(), delta);
+        assertEquals(0, testObjF.getConstantTerm(), delta);
 
         assertEquals(0, lp2.getConstraints().size());
     }
@@ -85,7 +86,7 @@ public class TestLinearProgram {
         assertEquals(3, lp2.getConstraints().size());
         assertEquals(testC1, lp2.getConstraints().get(0));
         assertEquals(testC2, lp2.getConstraints().get(1));
-        assertEquals(testC2, lp2.getConstraints().get(2));
+        assertEquals(testC3, lp2.getConstraints().get(2));
 
         lp2.deleteConstraint(2);
 
