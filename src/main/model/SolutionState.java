@@ -10,7 +10,8 @@ import java.util.ArrayList;
 // reader. However, I do my best to illustrate some more important points.
 
 // INVARIANT: matrix will always have (numVariables + numConstraints + 1) columns
-//            and (numConstraints + 1) rows
+//            and (numConstraints + 1) rows.
+//            Each entry in prevPivots has length exactly 2
 
 // As shorthand, let n = numVariables and m = numConstraints
 // A tableau takes the following form:
@@ -114,5 +115,13 @@ public class SolutionState {
 
     public int getNumConstraints() {
         return numConstraints;
+    }
+
+    public ArrayList<SolutionState> getPrevStates() {
+        return prevStates;
+    }
+
+    public ArrayList<int[]> getPrevPivots() {
+        return prevPivots;
     }
 }
