@@ -54,9 +54,10 @@ public class SolutionState {
     // REQUIRES: 1 <= i <= (numVariables + numConstraints)
     //           1 <= j <= numConstraints
     //           matrix[i][j] != 0
-    // MODIFIES: this
     // EFFECTS: performs a pivot operation on the a_ij entry of the simplex tableau
-    // and records the current state and pivot done
+    // and returns a new SolutionState object corresponding to the new tableau with
+    // the same number of variables, constraints, and with the pivot location and current state
+    // recorded
     public SolutionState pivot(int i, int j) {
         return null;
     }
