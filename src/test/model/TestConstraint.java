@@ -73,6 +73,6 @@ public class TestConstraint {
         double[] testCoeffs = {-3, 3, -1, 0, 0.14};
         c2.setCoefficients(testCoeffs);
         c2.setConstantTerm(5);
-        assertEquals("-3.00*x_1 + 3.00*x_2 - 1.00*x_3 + 0.00*x_4 + 0.14*x_5 <= 5", c2.toString());
+        assertEquals("-3.00*x_1 + 3.00*x_2 - 1.00*x_3 + 0.00*x_4 + 0.14*x_5 <= 5.00", c2.toString());
     }
 }
