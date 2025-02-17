@@ -49,11 +49,6 @@ public class ObjectiveFunction {
     public String toString() {
         String output = "f = ";
 
-        if (Arrays.equals(coefficients, new double[numVariables])) {
-            output += String.format("%.2f", constantTerm);
-            return output;
-        }
-
         boolean isFirst = true;
 
         for (int i = 0; i < numVariables; i++) {
@@ -65,9 +60,12 @@ public class ObjectiveFunction {
                 } else {
                     output += " - ";
                 }
+                output += String.format("%.2f*x_%d", Math.abs(currentCoeff), i + 1);
+            } else {
+                output += String.format("%.2f*x_%d", currentCoeff, i + 1);
+                isFirst = false;
             }
-            output += String.format("%.2f*x_%d", Math.abs(currentCoeff), i + 1);
-            isFirst = false;
+            
         }
         if (constantTerm >= 0) {
             output += String.format(" + %.2f", constantTerm);
