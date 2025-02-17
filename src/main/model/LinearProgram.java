@@ -38,14 +38,14 @@ public class LinearProgram {
     // MODIFIES: this
     // EFFECTS: deletes a constraint at index i in constraints in 1-based indexing
     public void deleteConstraint(int i) {
-        constraints.remove(i-1);
+        constraints.remove(i - 1);
     }
 
     // REQUIRES: solution.length = numVariables
     // EFFECTS: returns whether the given solution satisfies all constraints
     public boolean checkFeasible(double[] solution) {
         boolean result = true;
-        
+
         for (Constraint c : constraints) {
             if (!c.isFeasible(solution)) {
                 result = false;
@@ -62,15 +62,17 @@ public class LinearProgram {
         return objectiveFunction.computeValue(solution);
     }
 
-    // EFFECTS: returns a list of strings, one for each added constraint, and one additional string that
-    // represents the non-negativity constraints on each variable as the final item in the output list
+    // EFFECTS: returns a list of strings, one for each added constraint, and one
+    // additional string that
+    // represents the non-negativity constraints on each variable as the final item
+    // in the output list
     public ArrayList<String> constraintsToStrings() {
         ArrayList<String> output = new ArrayList<String>();
         String impliedConstraintsString = "";
 
         for (int i = 1; i <= numVariables; i++) {
             String thisConstraintString = String.format("(%d) ", i);
-            thisConstraintString += constraints.get(i-1).toString();
+            thisConstraintString += constraints.get(i - 1).toString();
             output.add(thisConstraintString);
 
             if (i != numVariables) {
@@ -78,7 +80,7 @@ public class LinearProgram {
             } else {
                 impliedConstraintsString += String.format("x_%d", i);
             }
-            
+
         }
 
         impliedConstraintsString += " >= 0";
@@ -86,7 +88,6 @@ public class LinearProgram {
 
         return output;
     }
-
 
     public ArrayList<Constraint> getConstraints() {
         return constraints;

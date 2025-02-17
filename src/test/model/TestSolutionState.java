@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
 
 import java.util.Arrays;
 
@@ -93,9 +94,9 @@ public class TestSolutionState {
     @Test
     public void testCheckOptimalTrue() {
         double[][] optimalTableau = {
-                { 0, 1, 2 / 3, -1 / 3, 4 / 3 },
-                { 1, 0, -1 / 3, 2 / 3, 10 / 3 },
-                { 0, 0, -1 / 3, -4 / 3, -38 / 3 }
+                { 0, 1, 2.0 / 3, -1.0 / 3, 4.0 / 3 },
+                { 1, 0, -1.0 / 3, 2.0 / 3, 10.0 / 3 },
+                { 0, 0, -1.0 / 3, -4.0 / 3, -38.0 / 3 }
         };
         ss1.setTableau(optimalTableau);
 
@@ -126,54 +127,56 @@ public class TestSolutionState {
 
     @Test
     public void testSuggestDantzigPivot() {
-        int[] correctPivot = { 1, 2 };
+        int[] correctPivot = { 2, 1 };
         assertArrayEquals(correctPivot, ss1.suggestDantzigPivot());
     }
 
     @Test
     public void testCopyTableau() {
         double[][] expectedTableau = {
-            { 1, 2, 1, 0, 6 },
-            { 2, 1, 0, 1, 8 },
-            { 3, 2, 0, 0, -1 }
+                { 1, 2, 1, 0, 6 },
+                { 2, 1, 0, 1, 8 },
+                { 3, 2, 0, 0, -1 }
         };
-    double[][] t = SolutionState.copyTableau(expectedTableau);
+        double[][] t = SolutionState.copyTableau(expectedTableau);
 
-    assertTrue(Arrays.deepEquals(expectedTableau, t));
-    assertFalse(t == expectedTableau);
+        assertTrue(Arrays.deepEquals(expectedTableau, t));
+        assertNotSame(t, expectedTableau);
     }
 
     @Test
     public void testPivot() {
         double[][] oldTableauReference = ss1.getTableau();
         double[][] oldTableauEntries = {
-            { 1, 2, 1, 0, 6 },
-            { 2, 1, 0, 1, 8 },
-            { 3, 2, 0, 0, -1 }
+                { 1, 2, 1, 0, 6 },
+                { 2, 1, 0, 1, 8 },
+                { 3, 2, 0, 0, -1 }
         };
-        ss1.pivot(1, 2);
-        int[] pivotIndices = { 1, 2 };
+        ss1.pivot(2, 1);
+        int[] pivotIndices = { 2, 1 };
 
-        double[][] expectedTableau = {
-                { 0, 3 / 2, 1, -1 / 2, 2 },
-                { 1, 1 / 2, 0, 1 / 2, 4 },
-                { 0, 1 / 2, 0, -3 / 2, -12 }
-        };
-        assertTrue(Arrays.deepEquals(expectedTableau, ss1.getTableau()));
         assertEquals(1, ss1.getPrevPivots().size());
         assertArrayEquals(pivotIndices, ss1.getPrevPivots().get(0));
 
         assertEquals(1, ss1.getPrevTableaus().size());
-        assertFalse(oldTableauReference == ss1.getPrevTableaus().get(0));
+        assertNotSame(oldTableauReference, ss1.getPrevTableaus().get(0));
         assertTrue(Arrays.deepEquals(oldTableauEntries, ss1.getPrevTableaus().get(0)));
+
+        double[][] expectedTableau = {
+                { 0, 1.5, 1, -0.5, 2 },
+                { 1, 0.5, 0, 0.5, 4 },
+                { 0, 0.5, 0, -1.5, -13 }
+        };
+        double[][] resultTableau = ss1.getTableau();
+        assertTrue(Arrays.deepEquals(expectedTableau, resultTableau));
     }
 
     @Test
     public void testSetTableau() {
         double[][] expectedTableau = {
-                { 0, 3 / 2, 1, -1 / 2, 2 },
-                { 1, 1 / 2, 0, 1 / 2, 4 },
-                { 0, 1 / 2, 0, -3 / 2, -12 }
+                { 0, 1.5, 1, -0.5, 2 },
+                { 1, 0.5, 0, 0.5, 4 },
+                { 0, 0.5, 0, -1.5, -13 }
         };
         ss1.setTableau(expectedTableau);
 

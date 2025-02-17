@@ -38,16 +38,17 @@ public class SolutionState {
     // no prior tableaus or pivots and:
     // numVariables = lp.getNumVariables() &
     // numConstraints = lp.constraints.size()
-    
-    // INVARIANT: the tableau is constructed from the constraints & objective function of the inputted LP
+
+    // INVARIANT: the tableau is constructed from the constraints & objective
+    // function of the inputted LP
     // according to the class specification, with a m * m identity matrix attached
     // (this is necessary for the algorithm)
-    @SuppressWarnings("methodlength")
+    
     public SolutionState(LinearProgram lp) {
         numVariables = lp.getNumVariables();
         numConstraints = lp.getConstraints().size();
         prevPivots = new ArrayList<int[]>();
-        prevStates = new ArrayList<SolutionState>();
+        prevTableaus = new ArrayList<double[][]>();
         tableau = new double[numConstraints + 1][numVariables + numConstraints + 1];
         for (int i = 0; i < numConstraints + 1; i++) {
             for (int j = 0; j < numVariables + numConstraints + 1; j++) {
@@ -71,49 +72,56 @@ public class SolutionState {
         }
     }
 
-    // EFFECTS: produces a copy of given solution state that references new objects
-    public SolutionState(SolutionState ss) {
-        numVariables = ss.getNumVariables();
-        numConstraints = ss.getNumConstraints();
-        prevPivots = new ArrayList<int[]>(ss.getPrevPivots());
-        prevStates = new ArrayList<SolutionState>(ss.getPrevStates());
-        double[][] oldTableau = ss.getTableau();
-        double[][] deepTableauCopy = new double[oldTableau.length][oldTableau[0].length];
-        for (int i = 0; i < oldTableau.length; i++) {
-            System.arraycopy(oldTableau[i], 0, deepTableauCopy[i], 0, oldTableau[i].length);
-        }
-        tableau = deepTableauCopy;
-    }
-
     // EFFECTS: returns the objective value of the current solution state
     // (this is the negation of the bottom right value in the tableau)
     public double getValue() {
         return -tableau[numConstraints][numVariables + numConstraints];
     }
 
-    // REQUIRES: 1 <= i <= (numVariables + numConstraints)
-    //           1 <= j <= numConstraints
+    // REQUIRES: 1 <= l <= (numVariables + numConstraints + 1)
+    //           1 <= k <= numConstraints + 1
     //           tableau[i][j] != 0
     // MODIFIES: this
-    // EFFECTS: performs a pivot operation on the a_ij entry of the simplex tableau
+    // EFFECTS: performs a pivot operation on the a_lk entry of the simplex tableau
+    // (1-based index)
     // and returns a new SolutionState object corresponding to the new tableau with
-    // the same number of variables, constraints, and with the pivot location and current state
-    // recorded
-    public SolutionState pivot(int i, int j) {
-        int[] newPivot = {i, j};
-        SolutionState oldSS = new SolutionState(this);
+    // the same
+    // number of variables, constraints, and with the pivot location and current
+    // tableau recorded
+    public void pivot(int l, int k) {
+        int[] newPivot = { l, k };
+        double[][] oldTableau = copyTableau(tableau);
         prevPivots.add(newPivot);
-        prevStates.add(oldSS);
+        prevTableaus.add(oldTableau);
+        double pivotEntry = oldTableau[l - 1][k - 1];
+        double[][] newTableau = new double[numConstraints + 1][numVariables + numConstraints + 1];
+        for (int i = 1; i <= numConstraints + 1; i++) {
+            double r = oldTableau[i - 1][k - 1];
+            for (int j = 1; j <= numVariables + numConstraints + 1; j++) {
+                double q = oldTableau[l - 1][j - 1];
+                if (i == l) {
+                    newTableau[i - 1][j - 1] = q / pivotEntry;
+                } else {
+                    newTableau[i - 1][j - 1] = oldTableau[i - 1][j - 1] - (r * q / pivotEntry);
+                }
+            }
+        }
+        tableau = newTableau;
+    }
+
+    // EFFECTS: returns a deep copy of the input tableau with new references
+    public static double[][] copyTableau(double[][] oldTableau) {
         double[][] deepTableauCopy = new double[oldTableau.length][oldTableau[0].length];
         for (int i = 0; i < oldTableau.length; i++) {
             System.arraycopy(oldTableau[i], 0, deepTableauCopy[i], 0, oldTableau[i].length);
         }
-
-        return output;
+        return deepTableauCopy;
     }
 
-    // REQUIRES: some entry of the last row of the tableau is >= 0 (this is true anyways by invariant)
-    // EFFECTS: returns the column number of the highest c_i value in the tableau in 1-based indexing
+    // REQUIRES: some entry of the last row of the tableau is >= 0 (this is true
+    // anyways by invariant)
+    // EFFECTS: returns the column number of the highest c_i value in the tableau in
+    // 1-based indexing
     // if 2 columns have the same value, return the first one
     public int maximalCoefficientIndex() {
         int output = -1;
@@ -129,7 +137,8 @@ public class SolutionState {
     }
 
     // REQUIRES: a_ik is non-negative for some 1 <= k <= m
-    // EFFECTS: returns the row number k (in 1-based indexing) of the minimum ratio b_k / a_ik
+    // EFFECTS: returns the row number k (in 1-based indexing) of the minimum ratio
+    // b_k / a_ik
     // for entering variable i (column number in 1-based indexing)
     // if 2 rows have the same value, return the first one
     public int minimumRatioIndex(int i) {
@@ -177,23 +186,26 @@ public class SolutionState {
         return false;
     }
 
-    // REQUIRES: tableau[i][numConstraints + 1] >= 0 for some i = 1, ..., (numVariables + numConstraints)
-    //           ie, some entry in the last row of the tableau (other than the final one) is non-negative
-    // EFFECTS: suggests indices {i, j} for the next feasible pivot operation in the 
+    // REQUIRES: tableau[i][numConstraints + 1] >= 0 for some i = 1, ...,
+    // (numVariables + numConstraints)
+    // ie, some entry in the last row of the tableau (other than the final one) is
+    // non-negative
+    // EFFECTS: suggests indices {i, j} for the next feasible pivot operation in the
     // simplex algorithm according to Dantzig's rule (maximal coefficient)
 
     // NOTE: (this method relies VERY heavily on theory from linear optimization)
-    // This rule relies on picking a column l to pivot on based on the maximum value amongst the
+    // This rule relies on picking a column l to pivot on based on the maximum value
+    // amongst the
     // non-negative entries described in the "REQUIRES" section
-    // Feasibility is ensured by picking the row k leaving from the basis by computing the minimum quotient
+    // Feasibility is ensured by picking the row k leaving from the basis by
+    // computing the minimum quotient
     // b_k / a_lk over all values of k.
     public int[] suggestDantzigPivot() {
-        int i = maximalCoefficientIndex();
-        int j = minimumRatioIndex(i);
-        int[] pivotLocation = {i, j};
+        int j = maximalCoefficientIndex();
+        int i = minimumRatioIndex(j);
+        int[] pivotLocation = { i, j };
         return pivotLocation;
     }
-
 
     // REQUIRES: t.length = m + 1, t[0].length = m + n + 1
     // MODIFIES: this
@@ -214,8 +226,8 @@ public class SolutionState {
         return numConstraints;
     }
 
-    public ArrayList<SolutionState> getPrevStates() {
-        return prevStates;
+    public ArrayList<double[][]> getPrevTableaus() {
+        return prevTableaus;
     }
 
     public ArrayList<int[]> getPrevPivots() {
