@@ -80,9 +80,10 @@ public class TestSolutionState {
                 { 0, 0, 1, 0, 0, 0 },
                 { 0, 0, 0, 1, 0, 0 },
                 { 0, 0, 0, 0, 1, 0 },
-                { 0, 0, 0, 0, 0, 0 }
+                { 0, 0, 0, 0, 0, -0.0 }
         };
-        assertTrue(Arrays.deepEquals(expectedTableau, SolutionState.convertToTableau(lp2)));
+        double[][] testOutput = SolutionState.convertToTableau(lp2);
+        assertTrue(Arrays.deepEquals(expectedTableau, testOutput));
     }
 
     @Test

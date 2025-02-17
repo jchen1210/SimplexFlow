@@ -49,34 +49,37 @@ public class SolutionState {
         numConstraints = lp.getConstraints().size();
         prevPivots = new ArrayList<int[]>();
         prevTableaus = new ArrayList<double[][]>();
-        tableau = new double[numConstraints + 1][numVariables + numConstraints + 1];
-        for (int i = 0; i < numConstraints + 1; i++) {
-            for (int j = 0; j < numVariables + numConstraints + 1; j++) {
-                if (i < numConstraints) {
-                    if (j < numVariables) {
-                        tableau[i][j] = lp.getConstraints().get(i).getCoefficients()[j];
-                    } else if (j == i + numVariables) {
-                        tableau[i][j] = 1;
-                    } else if (j == numVariables + numConstraints) {
-                        tableau[i][j] = lp.getConstraints().get(i).getConstantTerm();
-                    }
-
-                } else {
-                    if (j < numVariables) {
-                        tableau[i][j] = lp.getObjF().getCoefficients()[j];
-                    } else if (j == numVariables + numConstraints) {
-                        tableau[i][j] = -lp.getObjF().getConstantTerm();
-                    }
-                }
-            }
-        }
+        tableau = convertToTableau(lp);
     }
 
     // EFFECTS: produces a simplex tableau from a given Linear Program with
     // numConstraints + 1 rows, numVariables + numConstraints + 1 columns
     // according to the class invariant
     public static double[][] convertToTableau(LinearProgram lp) {
-        return null;
+        int n = lp.getNumVariables();
+        int m = lp.getConstraints().size();
+        double[][] output = new double[m + 1][n + m + 1];
+        for (int i = 0; i < m + 1; i++) {
+            for (int j = 0; j < n + m + 1; j++) {
+                if (i < m) {
+                    if (j < n) {
+                        output[i][j] = lp.getConstraints().get(i).getCoefficients()[j];
+                    } else if (j == i + n) {
+                        output[i][j] = 1;
+                    } else if (j == n + m) {
+                        output[i][j] = lp.getConstraints().get(i).getConstantTerm();
+                    }
+
+                } else {
+                    if (j < n) {
+                        output[i][j] = lp.getObjF().getCoefficients()[j];
+                    } else if (j == n + m) {
+                        output[i][j] = -lp.getObjF().getConstantTerm();
+                    }
+                }
+            }
+        }
+        return output;
     }
 
     // EFFECTS: returns the objective value of the current solution state
