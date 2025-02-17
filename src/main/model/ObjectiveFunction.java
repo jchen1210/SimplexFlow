@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Arrays;
+
 // represents a linear function of arbitrarily valued variables each multiplied
 // by a coefficient with a constant term added
 // ie, f(x_1,x_2,...) = ax_1 + bx_2 + ... + C
@@ -12,32 +14,66 @@ public class ObjectiveFunction {
     // EFFECTS: creates an objective function with n variables (and thus n coefficients)
     // where all coefficients and the constantTerm are zeroes
     public ObjectiveFunction(int n) {
-
+        numVariables = n;
+        coefficients = new double[n];
+        constantTerm = 0;
     }
 
     // MODIFIES: this
     // EFFECTS: sets the constant term to c
     public void setConstantTerm(double c) {
-
+        constantTerm = c;
     }
 
     // REQUIRES: coeffs.length = numVariables
     // MODIFIES: this
     // EFFECTS: sets the coefficients to coeffs
     public void setCoefficients(double[] coeffs) {
-        
+        coefficients = coeffs;
     }
 
     // REQUIRES: solution.length = numVariables
     // EFFECTS: returns the value of a given solution in the objective function
     public double computeValue(double[] solution) {
-        return 0;
+        double value = 0;
+        for (int i = 0; i < solution.length; i++) {
+            value += solution[i] * coefficients[i];
+        }
+        value += constantTerm;
+        return value;
     }
 
 
-    // EFFECTS: returns a string representation of objective function
+    // EFFECTS: returns a string representation of objective function with precision to
+    // 2 decimal places. Terms with zero coefficients are omitted.
     public String toString() {
-        return "";
+        String output = "f = ";
+
+        if (Arrays.equals(coefficients, new double[numVariables])) {
+            output += String.format("%.2f", constantTerm);
+            return output;
+        }
+
+        boolean isFirst = true;
+
+        for (int i = 0; i < numVariables; i++) {
+            
+            if (!isFirst) {
+                if (coefficients[i] >= 0) {
+                    output += " + ";
+                } else if (coefficients[i] < 0) {
+                    output += " - ";
+                }
+            }
+            output += String.format("%.2f*x_%d", Math.abs(coefficients[i]), i + 1);
+            isFirst = false;
+        }
+        if (constantTerm > 0) {
+            output += String.format(" + %.2f", constantTerm);
+        } else if (constantTerm < 0) {
+            output += String.format(" - %.2f", Math.abs(constantTerm));
+        }
+        return output;
     }
 
     public int getNumVariables() {
