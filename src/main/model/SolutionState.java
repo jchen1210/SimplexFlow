@@ -72,6 +72,13 @@ public class SolutionState {
         }
     }
 
+    // EFFECTS: produces a simplex tableau from a given Linear Program with
+    // numConstraints + 1 rows, numVariables + numConstraints + 1 columns
+    // according to the class invariant
+    public static double[][] convertToTableau(LinearProgram lp) {
+        return null;
+    }
+
     // EFFECTS: returns the objective value of the current solution state
     // (this is the negation of the bottom right value in the tableau)
     public double getValue() {

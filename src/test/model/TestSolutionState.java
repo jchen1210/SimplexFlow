@@ -18,6 +18,7 @@ public class TestSolutionState {
     private Constraint c2;
     private Constraint c3;
     private Constraint c4;
+    private Constraint c5;
     private ObjectiveFunction objF1;
     private SolutionState ss1;
     private SolutionState ssEmpty;
@@ -48,15 +49,6 @@ public class TestSolutionState {
         lp1.addConstraint(c2);
 
         ss1 = new SolutionState(lp1);
-
-        lp2 = new LinearProgram(2);
-        c3 = new Constraint(2);
-        c4 = new Constraint(2);
-
-        lp2.addConstraint(c3);
-        lp2.addConstraint(c4);
-
-        ssEmpty = new SolutionState(lp2);
     }
 
     @Test
@@ -75,7 +67,45 @@ public class TestSolutionState {
     }
 
     @Test
+    public void testEmptyConvertToTableau() {
+        lp2 = new LinearProgram(2);
+        c3 = new Constraint(2);
+        c4 = new Constraint(2);
+        c5 = new Constraint(2);
+        lp2.addConstraint(c3);
+        lp2.addConstraint(c4);
+        lp2.addConstraint(c5);
+
+        double[][] expectedTableau = {
+                { 0, 0, 1, 0, 0, 0 },
+                { 0, 0, 0, 1, 0, 0 },
+                { 0, 0, 0, 0, 1, 0 },
+                { 0, 0, 0, 0, 0, 0 }
+        };
+        assertTrue(Arrays.deepEquals(expectedTableau, SolutionState.convertToTableau(lp2)));
+    }
+
+    @Test
+    public void testFilledConvertToTableau() {
+        double[][] expectedTableau = {
+                { 1, 2, 1, 0, 6 },
+                { 2, 1, 0, 1, 8 },
+                { 3, 2, 0, 0, -1 }
+        };
+        assertTrue(Arrays.deepEquals(expectedTableau, SolutionState.convertToTableau(lp1)));
+    }
+
+    @Test
     public void testGetValue() {
+        lp2 = new LinearProgram(2);
+        c3 = new Constraint(2);
+        c4 = new Constraint(2);
+        c5 = new Constraint(2);
+        lp2.addConstraint(c3);
+        lp2.addConstraint(c4);
+        lp2.addConstraint(c5);
+        ssEmpty = new SolutionState(lp2);
+
         assertEquals(1, ss1.getValue(), delta);
         assertEquals(0, ssEmpty.getValue(), delta);
     }
