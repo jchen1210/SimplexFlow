@@ -9,9 +9,10 @@ import java.util.ArrayList;
 // and linear optimization, and it is very difficult to make all of it clear to an unfamiliar
 // reader. However, I do my best to illustrate some more important points.
 
-// INVARIANT: matrix will always have (numVariables + numConstraints + 1) columns
+// INVARIANT: tableau will always have (numVariables + numConstraints + 1) columns
 //            and (numConstraints + 1) rows.
 //            Each entry in prevPivots has length exactly 2
+//            All entries in prevTableaus obey the tableau invariant
 
 // As shorthand, let n = numVariables and m = numConstraints
 // A tableau takes the following form:
@@ -30,11 +31,11 @@ public class SolutionState {
     private int numVariables;
     private int numConstraints;
     private double[][] tableau;
-    private ArrayList<SolutionState> prevStates;
+    private ArrayList<double[][]> prevTableaus;
     private ArrayList<int[]> prevPivots;
 
     // EFFECTS: produces a solution state corresponding to the inputted lp with
-    // no prior steps or pivots and:
+    // no prior tableaus or pivots and:
     // numVariables = lp.getNumVariables() &
     // numConstraints = lp.constraints.size()
     
@@ -72,7 +73,16 @@ public class SolutionState {
 
     // EFFECTS: produces a copy of given solution state that references new objects
     public SolutionState(SolutionState ss) {
-        
+        numVariables = ss.getNumVariables();
+        numConstraints = ss.getNumConstraints();
+        prevPivots = new ArrayList<int[]>(ss.getPrevPivots());
+        prevStates = new ArrayList<SolutionState>(ss.getPrevStates());
+        double[][] oldTableau = ss.getTableau();
+        double[][] deepTableauCopy = new double[oldTableau.length][oldTableau[0].length];
+        for (int i = 0; i < oldTableau.length; i++) {
+            System.arraycopy(oldTableau[i], 0, deepTableauCopy[i], 0, oldTableau[i].length);
+        }
+        tableau = deepTableauCopy;
     }
 
     // EFFECTS: returns the objective value of the current solution state
@@ -84,12 +94,21 @@ public class SolutionState {
     // REQUIRES: 1 <= i <= (numVariables + numConstraints)
     //           1 <= j <= numConstraints
     //           tableau[i][j] != 0
+    // MODIFIES: this
     // EFFECTS: performs a pivot operation on the a_ij entry of the simplex tableau
     // and returns a new SolutionState object corresponding to the new tableau with
     // the same number of variables, constraints, and with the pivot location and current state
     // recorded
     public SolutionState pivot(int i, int j) {
-        SolutionState output = this;
+        int[] newPivot = {i, j};
+        SolutionState oldSS = new SolutionState(this);
+        prevPivots.add(newPivot);
+        prevStates.add(oldSS);
+        double[][] deepTableauCopy = new double[oldTableau.length][oldTableau[0].length];
+        for (int i = 0; i < oldTableau.length; i++) {
+            System.arraycopy(oldTableau[i], 0, deepTableauCopy[i], 0, oldTableau[i].length);
+        }
+
         return output;
     }
 
