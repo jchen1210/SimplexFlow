@@ -70,6 +70,11 @@ public class SolutionState {
         }
     }
 
+    // EFFECTS: produces a copy of given solution state that references new objects
+    public SolutionState(SolutionState ss) {
+        
+    }
+
     // EFFECTS: returns the objective value of the current solution state
     // (this is the negation of the bottom right value in the tableau)
     public double getValue() {
