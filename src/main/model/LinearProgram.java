@@ -34,9 +34,9 @@ public class LinearProgram {
 
     }
 
-    // REQUIRES: 0 <= i < constraints.size()
+    // REQUIRES: 1 <= i <= constraints.size()
     // MODIFIES: this
-    // EFFECTS: deletes a constraint at index i in constraints in 0-based indexing
+    // EFFECTS: deletes a constraint at index i in constraints in 1-based indexing
     public void deleteConstraint(int i) {
 
     }
