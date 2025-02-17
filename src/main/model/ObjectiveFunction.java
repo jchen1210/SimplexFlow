@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Arrays;
-
 // represents a linear function of arbitrarily valued variables each multiplied
 // by a coefficient with a constant term added
 // ie, f(x_1,x_2,...) = ax_1 + bx_2 + ... + C

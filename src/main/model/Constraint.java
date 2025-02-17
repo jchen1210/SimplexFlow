@@ -38,13 +38,13 @@ public class Constraint {
         return false;
     }
 
-    public double[] getCoefficients() {
-        return coefficients;
+    // EFFECTS: returns a string representation of constraint
+    public String toString() {
+        return "";
     }
 
-    // EFFECTS: returns a string representation of constraint
-    public String constraintToString() {
-        return "";
+    public double[] getCoefficients() {
+        return coefficients;
     }
 
     public double getConstantTerm() {
