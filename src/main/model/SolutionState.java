@@ -44,6 +44,12 @@ public class SolutionState {
 
     }
 
+    // EFFECTS: returns the objective value of the current solution state
+    // (this is the negation of the bottom right value in the tableau)
+    public double getValue() {
+        return 0;
+    }
+
     // REQUIRES: 1 <= i <= (numVariables + numConstraints)
     //           1 <= j <= numConstraints
     //           matrix[i][j] != 0
@@ -52,6 +58,23 @@ public class SolutionState {
     // and records the current state and pivot done
     public SolutionState pivot(int i, int j) {
         return null;
+    }
+
+    // REQUIRES: 1 <= i <= (numVariables + numConstraints)
+    //           1 <= j <= numConstraints
+    //           matrix[i][j] != 0
+    // EFFECTS: returns the column number of the highest c_i value in the tableau in 1-based indexing
+    // if 2 columns have the same value, return the first one
+    public int maximalCoefficientIndex() {
+        return 0;
+    }
+
+    // REQUIRES: a_ik is non-negative for some 1 <= k <= m
+    // EFFECTS: returns the row number k (in 1-based indexing) of the minimum ratio b_k / a_ik
+    // for entering variable i (column number in 1-based indexing)
+    // if 2 rows have the same value, return the first one
+    public int minimumRatioIndex(int k) {
+        return 0;
     }
 
     // EFFECTS: returns true if optimality has been reached in the current step,
