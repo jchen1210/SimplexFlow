@@ -105,6 +105,14 @@ public class SolutionState {
         return pivotLocation;
     }
 
+
+    // REQUIRES: t.length = m + 1, t[0].length = m + n + 1
+    // MODIFIES: this
+    // EFFECTS: sets the tableau of a solution state to t for testing purposes.
+    public void setTableau(double[][] t) {
+
+    }
+
     public double[][] getTableau() {
         return tableau;
     }
