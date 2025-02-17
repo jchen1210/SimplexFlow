@@ -45,7 +45,7 @@ public class ObjectiveFunction {
 
 
     // EFFECTS: returns a string representation of objective function with precision to
-    // 2 decimal places. Terms with zero coefficients are omitted.
+    // 2 decimal places.
     public String toString() {
         String output = "f = ";
 
@@ -57,20 +57,21 @@ public class ObjectiveFunction {
         boolean isFirst = true;
 
         for (int i = 0; i < numVariables; i++) {
+            double currentCoeff = coefficients[i];
             
             if (!isFirst) {
-                if (coefficients[i] >= 0) {
+                if (currentCoeff >= 0) {
                     output += " + ";
-                } else if (coefficients[i] < 0) {
+                } else {
                     output += " - ";
                 }
             }
-            output += String.format("%.2f*x_%d", Math.abs(coefficients[i]), i + 1);
+            output += String.format("%.2f*x_%d", Math.abs(currentCoeff), i + 1);
             isFirst = false;
         }
-        if (constantTerm > 0) {
+        if (constantTerm >= 0) {
             output += String.format(" + %.2f", constantTerm);
-        } else if (constantTerm < 0) {
+        } else {
             output += String.format(" - %.2f", Math.abs(constantTerm));
         }
         return output;
