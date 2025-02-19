@@ -205,8 +205,7 @@ public class SolutionState {
 
     // NOTE: (this method relies VERY heavily on theory from linear optimization)
     // This rule relies on picking a column l to pivot on based on the maximum value
-    // amongst the
-    // non-negative entries described in the "REQUIRES" section
+    // amongst the non-negative entries described in the "REQUIRES" section
     // Feasibility is ensured by picking the row k leaving from the basis by
     // computing the minimum quotient
     // b_k / a_lk over all values of k.
