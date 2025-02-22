@@ -141,6 +141,38 @@ public class SimplexLearnerApp {
         System.out.println("\n");
     }
 
+    // REQUIRES: lp.getConstraints().size() >= 1
+    // MODIFIES: this
+    // EFFECTS: converts the lp into a solution state and begins the solving stage
+    private void doBeginSolve() {
+
+    }
+
+    // REQUIRES: ss is not null
+    // MODIFIES: this
+    // EFFECTS: prompts user to perform a pivot operation on the current solution state
+    private void doPivot() {
+
+    }
+
+    // REQUIRES: ss is not null
+    // EFFECTS: suggests the indices for a pivot based on maximal objective coefficient
+    private void doSuggestPivot() {
+
+    }
+
+    // REQUIRES: ss is not null
+    // EFFECTS: prints status information on the current solution state including objective value,
+    //          optimality, or unboundedness
+    private void doCheckStatus() {
+
+    }
+
+    // EFFECTS: prompts user to input a potential solution to check the value and feasibility of
+    private void doTrySolution() {
+
+    }
+
     // EFFECTS: converts a comma separated list of numbers to an array of doubles
     private static double[] csvToArray(String csv) {
         String[] nums = csv.split(", ");
