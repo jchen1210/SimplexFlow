@@ -70,11 +70,13 @@ public class LinearProgram {
         ArrayList<String> output = new ArrayList<String>();
         String impliedConstraintsString = "";
 
-        for (int i = 1; i <= numVariables; i++) {
+        for (int i = 1; i <= constraints.size(); i++) {
             String thisConstraintString = String.format("(%d) ", i);
             thisConstraintString += constraints.get(i - 1).toString();
             output.add(thisConstraintString);
+        }
 
+        for (int i = 1; i <= numVariables; i++) {
             if (i != numVariables) {
                 impliedConstraintsString += String.format("x_%d, ", i);
             } else {
