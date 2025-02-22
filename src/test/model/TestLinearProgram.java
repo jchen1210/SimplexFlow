@@ -123,7 +123,7 @@ public class TestLinearProgram {
     }
 
     @Test
-    public void checkFeasibleFalse() {
+    public void checkFeasibleFalseConstraints() {
         double[] testCoeffs1 = {5, -5};
         double[] testCoeffs2 = {3, 6};
         testC1.setCoefficients(testCoeffs1);
@@ -134,6 +134,21 @@ public class TestLinearProgram {
         lp2.addConstraint(testC2);
 
         double[] testSoln = {10,5};
+        assertFalse(lp2.checkFeasible(testSoln));
+    }
+
+    @Test
+    public void checkFeasibleFalseNonNegativity() {
+        double[] testCoeffs1 = {5, -5};
+        double[] testCoeffs2 = {3, 6};
+        testC1.setCoefficients(testCoeffs1);
+        testC1.setConstantTerm(1);
+        testC2.setCoefficients(testCoeffs2);
+        testC2.setConstantTerm(20);
+        lp2.addConstraint(testC1);
+        lp2.addConstraint(testC2);
+
+        double[] testSoln = {1, -1};
         assertFalse(lp2.checkFeasible(testSoln));
     }
 
