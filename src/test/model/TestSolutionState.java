@@ -20,8 +20,9 @@ public class TestSolutionState {
     private Constraint c4;
     private Constraint c5;
     private ObjectiveFunction objF1;
+    private ObjectiveFunction objF2;
     private SolutionState ss1;
-    private SolutionState ssEmpty;
+    private SolutionState ss2;
     private double delta;
 
     @BeforeEach
@@ -49,6 +50,17 @@ public class TestSolutionState {
         lp1.addConstraint(c2);
 
         ss1 = new SolutionState(lp1);
+
+        lp2 = new LinearProgram(3);
+        c3 = new Constraint(3);
+        c4 = new Constraint(3);
+        c5 = new Constraint(3);
+
+        lp2.addConstraint(c3);
+        lp2.addConstraint(c4);
+        lp2.addConstraint(c5);
+
+        ss2 = new SolutionState(lp2);
     }
 
     @Test
@@ -67,27 +79,19 @@ public class TestSolutionState {
     }
 
     @Test
-    public void testEmptyConvertToTableau() {
-        lp2 = new LinearProgram(2);
-        c3 = new Constraint(2);
-        c4 = new Constraint(2);
-        c5 = new Constraint(2);
-        lp2.addConstraint(c3);
-        lp2.addConstraint(c4);
-        lp2.addConstraint(c5);
-
+    public void testBigConvertToTableau() {
         double[][] expectedTableau = {
-                { 0, 0, 1, 0, 0, 0 },
-                { 0, 0, 0, 1, 0, 0 },
-                { 0, 0, 0, 0, 1, 0 },
-                { 0, 0, 0, 0, 0, -0.0 }
+                { 0, 0, 0, 1, 0, 0, 0 },
+                { 0, 0, 0, 0, 1, 0, 0 },
+                { 0, 0, 0, 0, 0, 1, 0 },
+                { 0, 0, 0, 0, 0, 0, -0.0 }
         };
         double[][] testOutput = SolutionState.convertToTableau(lp2);
         assertTrue(Arrays.deepEquals(expectedTableau, testOutput));
     }
 
     @Test
-    public void testFilledConvertToTableau() {
+    public void testSmallConvertToTableau() {
         double[][] expectedTableau = {
                 { 1, 2, 1, 0, 6 },
                 { 2, 1, 0, 1, 8 },
@@ -98,28 +102,50 @@ public class TestSolutionState {
 
     @Test
     public void testGetValue() {
-        lp2 = new LinearProgram(2);
-        c3 = new Constraint(2);
-        c4 = new Constraint(2);
-        c5 = new Constraint(2);
-        lp2.addConstraint(c3);
-        lp2.addConstraint(c4);
-        lp2.addConstraint(c5);
-        ssEmpty = new SolutionState(lp2);
-
         assertEquals(1, ss1.getValue(), delta);
-        assertEquals(0, ssEmpty.getValue(), delta);
+        assertEquals(0, ss2.getValue(), delta);
     }
 
     @Test
-    public void testMaximalCoefficientIndex() {
+    public void testMaximalCoefficientIndexExists() {
         assertEquals(1, ss1.maximalCoefficientIndex());
     }
 
     @Test
-    public void testMinimumRatioIndex() {
+    public void testMaximalCoefficientIndexDoesNotExist() {
+        assertEquals(-1, ss2.maximalCoefficientIndex());
+    }
+
+    @Test
+    public void test2MatchingMaximalCoefficientIndices() {
+        double[][] testTableau = {
+            { 0, 0, 0, 1, 0, 0, 0 },
+            { 0, -1, 0, 0, 1, 0, 2 },
+            { 0, 0, 1, 0, 0, 1, 1 },
+            { 1, -3, 1, 0, 0, 0, 0 }
+        };
+        ss2.setTableau(testTableau);
+        assertEquals(1, ss2.maximalCoefficientIndex());
+    }
+
+    @Test
+    public void testMinimumRatioIndexAlwaysValid() {
         assertEquals(2, ss1.minimumRatioIndex(1));
         assertEquals(1, ss1.minimumRatioIndex(2));
+    }
+
+    @Test
+    public void testMinimumRatioIndexSometimesValid() {
+        double[][] testTableau = {
+                { 0, 0, 0, 1, 0, 0, 0 },
+                { 0, -1, 0, 0, 1, 0, 2 },
+                { 0, 0, 1, 0, 0, 1, 1 },
+                { 0, -3, 0, 0, 0, 0, 0 }
+        };
+        ss2.setTableau(testTableau);
+        assertEquals(-1, ss2.minimumRatioIndex(1));
+        assertEquals(-1, ss2.minimumRatioIndex(2));
+        assertEquals(3, ss2.minimumRatioIndex(3));
     }
 
     @Test
@@ -160,6 +186,12 @@ public class TestSolutionState {
     public void testSuggestDantzigPivot() {
         int[] correctPivot = { 2, 1 };
         assertArrayEquals(correctPivot, ss1.suggestDantzigPivot());
+    }
+
+    @Test
+    public void testSuggestInvalidPivot() {
+        int[] correctPivot = { -1, -1 };
+        assertArrayEquals(correctPivot, ss2.suggestDantzigPivot());
     }
 
     @Test
