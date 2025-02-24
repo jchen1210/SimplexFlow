@@ -128,11 +128,10 @@ public class SolutionState {
         return deepTableauCopy;
     }
 
-    // REQUIRES: some entry of the last row of the tableau is >= 0 (this is true
-    // anyways by invariant)
     // EFFECTS: returns the column number of the highest c_i value in the tableau in
     // 1-based indexing
     // if 2 columns have the same value, return the first one
+    // if all entries in the final row are <= 0, return -1
     public int maximalCoefficientIndex() {
         int output = -1;
         double currentMax = 0;
@@ -146,11 +145,11 @@ public class SolutionState {
         return output;
     }
 
-    // REQUIRES: a_ik is non-negative for some 1 <= k <= m
     // EFFECTS: returns the row number k (in 1-based indexing) of the minimum ratio
     // b_k / a_ik
     // for entering variable i (column number in 1-based indexing)
     // if 2 rows have the same value, return the first one
+    // if no ratio b_k / a_ik exists as a real number or if index i is invalid for the tableau, return -1
     public int minimumRatioIndex(int i) {
         int output = -1;
         double currentMin = tableau[0][numVariables + numConstraints];
@@ -202,6 +201,7 @@ public class SolutionState {
     // non-negative
     // EFFECTS: suggests indices {i, j} for the next feasible pivot operation in the
     // simplex algorithm according to Dantzig's rule (maximal coefficient)
+    // if no valid pivots are found, at least one of i or j will be -1
 
     // NOTE: (this method relies VERY heavily on theory from linear optimization)
     // This rule relies on picking a column l to pivot on based on the maximum value
