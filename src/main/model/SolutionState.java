@@ -128,8 +128,8 @@ public class SolutionState {
         return deepTableauCopy;
     }
 
-    // EFFECTS: returns the column number of the highest c_i value in the tableau in
-    // 1-based indexing
+    // EFFECTS: returns the column number of the highest non-negative c_i value in
+    // the tableau in 1-based indexing
     // if 2 columns have the same value, return the first one
     // if all entries in the final row are <= 0, return -1
     public int maximalCoefficientIndex() {
@@ -152,14 +152,16 @@ public class SolutionState {
     // if no ratio b_k / a_ik exists as a real number or if index i is invalid for the tableau, return -1
     public int minimumRatioIndex(int i) {
         int output = -1;
-        double currentMin = tableau[0][numVariables + numConstraints];
+        double currentMin = Double.POSITIVE_INFINITY;
         for (int k = 0; k < numConstraints; k++) {
             double currentEntry = tableau[k][i - 1];
-            double currentConstant = tableau[k][numVariables + numConstraints];
-            double quotient = currentConstant / currentEntry;
-            if (quotient < currentMin) {
-                currentMin = quotient;
-                output = k + 1;
+            if (currentEntry > 0) {
+                double currentConstant = tableau[k][numVariables + numConstraints];
+                double quotient = currentConstant / currentEntry;
+                if (quotient < currentMin) {
+                    currentMin = quotient;
+                    output = k + 1;
+                }
             }
         }
         return output;
@@ -201,7 +203,7 @@ public class SolutionState {
     // non-negative
     // EFFECTS: suggests indices {i, j} for the next feasible pivot operation in the
     // simplex algorithm according to Dantzig's rule (maximal coefficient)
-    // if no valid pivots are found, at least one of i or j will be -1
+    // if no valid pivots are found, returns {-1, -1}
 
     // NOTE: (this method relies VERY heavily on theory from linear optimization)
     // This rule relies on picking a column l to pivot on based on the maximum value
@@ -210,9 +212,17 @@ public class SolutionState {
     // computing the minimum quotient
     // b_k / a_lk over all values of k.
     public int[] suggestDantzigPivot() {
+        int[] pivotLocation = {-1, -1};
         int j = maximalCoefficientIndex();
+        if (j == -1) {
+            return pivotLocation;
+        }
         int i = minimumRatioIndex(j);
-        int[] pivotLocation = { i, j };
+        if (i == -1) {
+            return pivotLocation;
+        }
+        pivotLocation[0] = i;
+        pivotLocation[1] = j;
         return pivotLocation;
     }
 
