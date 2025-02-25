@@ -39,6 +39,7 @@ public class SimplexLearnerApp {
 
             command = input.next();
             input.nextLine();
+            System.out.println();
 
             if (command.equals("q")) {
                 keepGoing = false;
@@ -87,6 +88,7 @@ public class SimplexLearnerApp {
         System.out.println("\ts: suggest pivot");
         System.out.println("\tc: check current solution");
         System.out.println("\tv: view LP");
+        System.out.println("\th: view solution history");
         System.out.println("\tt: try custom solution");
         System.out.println("\tq: quit app");
 
@@ -115,16 +117,18 @@ public class SimplexLearnerApp {
     // MODIFIES: this
     // EFFECTS: processes user input for the LP solution menu
     private void processSolutionCommand(String command) {
-        if (command.equals("p")) {
-            doPivot();
-        } else if (command.equals("t")) {
+        if (command.equals("t")) {
             printTableau(ss);
+        } else if (command.equals("p")) {
+            doPivot();
         } else if (command.equals("s")) {
             doSuggestPivot();
         } else if (command.equals("c")) {
             doCheckStatus();
         } else if (command.equals("v")) {
             doViewLP();
+        } else if (command.equals("h")) {
+            doShowHistory();
         } else if (command.equals("t")) {
             doTrySolution();
         } else {
@@ -172,7 +176,7 @@ public class SimplexLearnerApp {
         for (String cons : lp.constraintsToStrings()) {
             System.out.println(cons);
         }
-        System.out.println("Which constraint would you like to delete?");
+        System.out.println("\nWhich constraint would you like to delete?");
         int deleteIndex = input.nextInt();
         lp.getConstraints().remove(deleteIndex - 1);
         input.nextLine();
@@ -182,7 +186,7 @@ public class SimplexLearnerApp {
     // constraints
     private void doViewLP() {
         String objFString = lp.getObjF().toString();
-        System.out.println("\nMaximize:\n" + objFString + "\n\nsubject to:");
+        System.out.println("Maximize:\n" + objFString + "\n\nsubject to:");
 
         for (String cons : lp.constraintsToStrings()) {
             System.out.println(cons);
@@ -270,7 +274,19 @@ public class SimplexLearnerApp {
     // EFFECTS: prints out the previous pivoting steps and tableau history from
     // first to last
     private void doShowHistory() {
-        
+        int len = ss.getPrevTableaus().size();
+        if (len == 0) {
+            System.out.println("No previous tableaus or pivots found, printing current tableau...");
+        } else {
+            System.err.println("Starting tableau:");
+            for (int i = 0; i < len; i++) {
+                printTableau(ss.getPrevTableaus().get(i));
+                System.out.printf("\nEntered column %d, exited row %d\n",
+                        ss.getPrevPivots().get(i)[1],
+                        ss.getPrevPivots().get(i)[0]);
+            }
+        }
+        printTableau(ss);
 
     }
 
@@ -318,6 +334,32 @@ public class SimplexLearnerApp {
     // EFFECTS: prints a given tableau and infers the number of variables and
     // constraints
     private static void printTableau(double[][] tab) {
+        int m = tab.length - 1;
+        int n = tab[0].length - m - 1;
 
+        System.out.print("\nBV  |");
+        for (int i = 0; i < n; i++) {
+            System.out.printf("   x_%-2d", i + 1);
+        }
+
+        for (int j = 0; j < m; j++) {
+            System.out.printf("   s_%-2d", j + 1);
+        }
+        System.out.print("|  RHS\n");
+
+        for (int i = 0; i < tab.length; i++) {
+            if (i < tab.length - 1) {
+                System.out.printf("C%-2d |", i + 1);
+            } else {
+                System.out.print("f   |");
+            }
+            for (int j = 0; j < tab[0].length; j++) {
+                if (j < tab[0].length - 1) {
+                    System.out.printf("%7.2f", tab[i][j]);
+                } else {
+                    System.out.printf("|%6.2f\n", tab[i][j]);
+                }
+            }
+        }
     }
 }
