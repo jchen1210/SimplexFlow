@@ -9,8 +9,9 @@ public class ObjectiveFunction {
     private double constantTerm;
 
     // REQUIRES: n >= 1
-    // EFFECTS: creates an objective function with n variables (and thus n coefficients)
-    // where all coefficients and the constantTerm are zeroes
+    // EFFECTS: creates an objective function with n variables
+    // (and thus n coefficients) where all coefficients and the constantTerm are
+    // zeroes
     public ObjectiveFunction(int n) {
         numVariables = n;
         coefficients = new double[n];
@@ -41,9 +42,8 @@ public class ObjectiveFunction {
         return value;
     }
 
-
-    // EFFECTS: returns a string representation of objective function with precision to
-    // 2 decimal places.
+    // EFFECTS: returns a string representation of objective function with precision
+    // to 2 decimal places.
     public String toString() {
         String output = "f = ";
 
@@ -51,7 +51,7 @@ public class ObjectiveFunction {
 
         for (int i = 0; i < numVariables; i++) {
             double currentCoeff = coefficients[i];
-            
+
             if (!isFirst) {
                 if (currentCoeff >= 0) {
                     output += " + ";
@@ -63,7 +63,7 @@ public class ObjectiveFunction {
                 output += String.format("%.2f*x_%d", currentCoeff, i + 1);
                 isFirst = false;
             }
-            
+
         }
         if (constantTerm >= 0) {
             output += String.format(" + %.2f", constantTerm);

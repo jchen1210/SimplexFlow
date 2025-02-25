@@ -43,7 +43,7 @@ public class SolutionState {
     // function of the inputted LP
     // according to the class specification, with a m * m identity matrix attached
     // (this is necessary for the algorithm)
-    
+
     public SolutionState(LinearProgram lp) {
         numVariables = lp.getNumVariables();
         numConstraints = lp.getConstraints().size();
@@ -89,8 +89,8 @@ public class SolutionState {
     }
 
     // REQUIRES: 1 <= l <= (numVariables + numConstraints + 1)
-    //           1 <= k <= numConstraints + 1
-    //           tableau[i][j] != 0
+    // 1 <= k <= numConstraints + 1
+    // tableau[i][j] != 0
     // MODIFIES: this
     // EFFECTS: performs a pivot operation on the a_lk entry of the simplex tableau
     // (1-based index)
@@ -149,7 +149,8 @@ public class SolutionState {
     // b_k / a_ik
     // for entering variable i (column number in 1-based indexing)
     // if 2 rows have the same value, return the first one
-    // if no ratio b_k / a_ik exists as a real number or if index i is invalid for the tableau, return -1
+    // if no ratio b_k / a_ik exists as a real number or if index i is invalid for
+    // the tableau, return -1
     public int minimumRatioIndex(int i) {
         int output = -1;
         double currentMin = Double.POSITIVE_INFINITY;
@@ -201,8 +202,9 @@ public class SolutionState {
     // (numVariables + numConstraints)
     // ie, some entry in the last row of the tableau (other than the final one) is
     // non-negative
-    // EFFECTS: suggests indices {i, j} (1-based, matrix indexing) for the next 
-    // feasible pivot operation in the simplex algorithm according to Dantzig's rule (maximal coefficient)
+    // EFFECTS: suggests indices {i, j} (1-based, matrix indexing) for the next
+    // feasible pivot operation in the simplex algorithm according to Dantzig's rule
+    // (maximal coefficient)
     // if no valid pivots are found, returns {-1, -1}
 
     // NOTE: (this method relies VERY heavily on theory from linear optimization)
@@ -212,7 +214,7 @@ public class SolutionState {
     // computing the minimum quotient
     // b_k / a_lk over all values of k.
     public int[] suggestDantzigPivot() {
-        int[] pivotLocation = {-1, -1};
+        int[] pivotLocation = { -1, -1 };
         int j = maximalCoefficientIndex();
         if (j == -1) {
             return pivotLocation;

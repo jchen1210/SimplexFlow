@@ -20,11 +20,11 @@ public class TestSolutionState {
     private Constraint c4;
     private Constraint c5;
     private ObjectiveFunction objF1;
-    private ObjectiveFunction objF2;
     private SolutionState ss1;
     private SolutionState ss2;
     private double delta;
 
+    @SuppressWarnings("methodlength")
     @BeforeEach
     public void runBefore() {
         delta = 0.0001;
@@ -119,10 +119,10 @@ public class TestSolutionState {
     @Test
     public void test2MatchingMaximalCoefficientIndices() {
         double[][] testTableau = {
-            { 0, 0, 0, 1, 0, 0, 0 },
-            { 0, -1, 0, 0, 1, 0, 2 },
-            { 0, 0, 1, 0, 0, 1, 1 },
-            { 1, -3, 1, 0, 0, 0, 0 }
+                { 0, 0, 0, 1, 0, 0, 0 },
+                { 0, -1, 0, 0, 1, 0, 2 },
+                { 0, 0, 1, 0, 0, 1, 1 },
+                { 1, -3, 1, 0, 0, 0, 0 }
         };
         ss2.setTableau(testTableau);
         assertEquals(1, ss2.maximalCoefficientIndex());
@@ -191,10 +191,10 @@ public class TestSolutionState {
     @Test
     public void testSuggestInvalidPivotColumn() {
         double[][] testTableau = {
-            { 0, 0, 0, 1, 0, 0, 0 },
-            { 0, -1, 0, 0, 1, 0, 2 },
-            { 0, 0, 1, 0, 0, 1, 1 },
-            { 1, -3, 1, 0, 0, 0, 0 }
+                { 0, 0, 0, 1, 0, 0, 0 },
+                { 0, -1, 0, 0, 1, 0, 2 },
+                { 0, 0, 1, 0, 0, 1, 1 },
+                { 1, -3, 1, 0, 0, 0, 0 }
         };
         ss2.setTableau(testTableau);
         int[] correctPivot = { -1, -1 };
@@ -204,10 +204,10 @@ public class TestSolutionState {
     @Test
     public void testSuggestInvalidPivotRow() {
         double[][] testTableau = {
-            { 0, 0, 0, 1, 0, 0, 0 },
-            { 0, -1, 0, 0, 1, 0, 2 },
-            { 0, 0, 1, 0, 0, 1, 1 },
-            { 0, -3, 0, 0, 0, 0, 0 }
+                { 0, 0, 0, 1, 0, 0, 0 },
+                { 0, -1, 0, 0, 1, 0, 2 },
+                { 0, 0, 1, 0, 0, 1, 1 },
+                { 0, -3, 0, 0, 0, 0, 0 }
         };
         ss2.setTableau(testTableau);
         int[] correctPivot = { -1, -1 };

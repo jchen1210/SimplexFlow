@@ -51,7 +51,7 @@ public class Constraint {
 
         for (int i = 0; i < numVariables; i++) {
             double currentCoeff = coefficients[i];
-            
+
             if (!isFirst) {
                 if (currentCoeff >= 0) {
                     output += " + ";
@@ -63,7 +63,7 @@ public class Constraint {
                 output += String.format("%.2f*x_%d", currentCoeff, i + 1);
                 isFirst = false;
             }
-            
+
         }
         output += String.format(" <= %.2f", Math.abs(constantTerm));
         return output;

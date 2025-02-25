@@ -42,7 +42,7 @@ public class LinearProgram {
     }
 
     // REQUIRES: solution.length = numVariables
-    // EFFECTS: returns whether the given solution satisfies all constraints 
+    // EFFECTS: returns whether the given solution satisfies all constraints
     public boolean checkFeasible(double[] solution) {
 
         for (double num : solution) {

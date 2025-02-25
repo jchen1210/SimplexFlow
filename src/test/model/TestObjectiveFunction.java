@@ -10,7 +10,7 @@ public class TestObjectiveFunction {
     private ObjectiveFunction twoVarObjF;
     private ObjectiveFunction fiveVarObjF;
     private double delta;
-    
+
     @BeforeEach
     public void runBefore() {
         twoVarObjF = new ObjectiveFunction(2);
@@ -22,10 +22,9 @@ public class TestObjectiveFunction {
     public void testConstructor() {
         assertEquals(2, twoVarObjF.getNumVariables());
         assertEquals(0, twoVarObjF.getConstantTerm(), delta);
-        double[] twoZeroes = {0,0};
+        double[] twoZeroes = { 0, 0 };
         assertArrayEquals(twoZeroes, twoVarObjF.getCoefficients(), delta);
     }
-
 
     @Test
     public void testSetConstantTerm() {
@@ -35,15 +34,15 @@ public class TestObjectiveFunction {
 
     @Test
     public void testSetCoefficients() {
-        double[] testCoeffs = {0.123, -59};
+        double[] testCoeffs = { 0.123, -59 };
         twoVarObjF.setCoefficients(testCoeffs);
         assertArrayEquals(testCoeffs, twoVarObjF.getCoefficients(), delta);
     }
 
     @Test
     public void testComputeValue() {
-        double[] testSolution = {0, 1.5, 2, 3, 1};
-        double[] testCoeffs = {100, 0, 3, -1, 0.1};
+        double[] testSolution = { 0, 1.5, 2, 3, 1 };
+        double[] testCoeffs = { 100, 0, 3, -1, 0.1 };
         fiveVarObjF.setCoefficients(testCoeffs);
         fiveVarObjF.setConstantTerm(1);
         double correctValue = (0 * 100) + (1.5 * 0) + (2 * 3) + (3 * -1) + (1 * 0.1) + 1;
@@ -53,7 +52,7 @@ public class TestObjectiveFunction {
 
     @Test
     public void testToStringNonZeroCoeffsPosConstant() {
-        double[] testCoeffs = {100, 0, 3, -1, 0.1};
+        double[] testCoeffs = { 100, 0, 3, -1, 0.1 };
         fiveVarObjF.setCoefficients(testCoeffs);
         fiveVarObjF.setConstantTerm(1);
 
@@ -62,7 +61,7 @@ public class TestObjectiveFunction {
 
     @Test
     public void testToStringNonZeroCoeffsNegConstant() {
-        double[] testCoeffs = {-100, 0, 3, -1, 0.1};
+        double[] testCoeffs = { -100, 0, 3, -1, 0.1 };
         fiveVarObjF.setCoefficients(testCoeffs);
         fiveVarObjF.setConstantTerm(-1);
 
@@ -71,7 +70,7 @@ public class TestObjectiveFunction {
 
     @Test
     public void testToStringAllZeroCoeffsPosConstant() {
-        double[] testCoeffs = {0, 0, 0, 0, 0};
+        double[] testCoeffs = { 0, 0, 0, 0, 0 };
         fiveVarObjF.setCoefficients(testCoeffs);
         fiveVarObjF.setConstantTerm(1);
 
@@ -80,11 +79,10 @@ public class TestObjectiveFunction {
 
     @Test
     public void testToStringAllZeroCoeffsNegConstant() {
-        double[] testCoeffs = {0, 0, 0, 0, 0};
+        double[] testCoeffs = { 0, 0, 0, 0, 0 };
         fiveVarObjF.setCoefficients(testCoeffs);
         fiveVarObjF.setConstantTerm(-1);
 
         assertEquals("f = 0.00*x_1 + 0.00*x_2 + 0.00*x_3 + 0.00*x_4 + 0.00*x_5 - 1.00", fiveVarObjF.toString());
     }
 }
-

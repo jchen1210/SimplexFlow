@@ -16,7 +16,7 @@ public class TestLinearProgram {
     private Constraint testC2;
     private Constraint testC3;
     private double delta;
-    
+
     @BeforeEach
     public void runBefore() {
         lp2 = new LinearProgram(2);
@@ -42,7 +42,7 @@ public class TestLinearProgram {
     @Test
     public void setObjF() {
         ObjectiveFunction testObjF = new ObjectiveFunction(2);
-        double[] testCoeffs = {1.14, -0.5};
+        double[] testCoeffs = { 1.14, -0.5 };
         testObjF.setCoefficients(testCoeffs);
         testObjF.setConstantTerm(1);
         lp2.setObjF(testObjF);
@@ -52,7 +52,7 @@ public class TestLinearProgram {
 
     @Test
     public void addOneConstraint() {
-        double[] testCoeffs1 = {5, -5};
+        double[] testCoeffs1 = { 5, -5 };
         testC1.setCoefficients(testCoeffs1);
         testC1.setConstantTerm(1);
         lp2.addConstraint(testC1);
@@ -63,8 +63,8 @@ public class TestLinearProgram {
 
     @Test
     public void addTwoConstraint() {
-        double[] testCoeffs1 = {5, -5};
-        double[] testCoeffs2 = {3, 6};
+        double[] testCoeffs1 = { 5, -5 };
+        double[] testCoeffs2 = { 3, 6 };
         testC1.setCoefficients(testCoeffs1);
         testC1.setConstantTerm(1);
         testC2.setCoefficients(testCoeffs2);
@@ -98,19 +98,19 @@ public class TestLinearProgram {
     @Test
     public void getObjValue() {
         ObjectiveFunction testObjF = new ObjectiveFunction(2);
-        double[] testCoeffs = {2, -0.5};
+        double[] testCoeffs = { 2, -0.5 };
         testObjF.setCoefficients(testCoeffs);
         testObjF.setConstantTerm(10);
         lp2.setObjF(testObjF);
 
-        double[] testSoln = {10, 10};
+        double[] testSoln = { 10, 10 };
         assertEquals(testObjF.computeValue(testSoln), lp2.getObjValue(testSoln), delta);
     }
 
     @Test
     public void checkFeasibleTrue() {
-        double[] testCoeffs1 = {5, -5};
-        double[] testCoeffs2 = {3, 6};
+        double[] testCoeffs1 = { 5, -5 };
+        double[] testCoeffs2 = { 3, 6 };
         testC1.setCoefficients(testCoeffs1);
         testC1.setConstantTerm(1);
         testC2.setCoefficients(testCoeffs2);
@@ -118,14 +118,14 @@ public class TestLinearProgram {
         lp2.addConstraint(testC1);
         lp2.addConstraint(testC2);
 
-        double[] testSoln = {0,0};
+        double[] testSoln = { 0, 0 };
         assertTrue(lp2.checkFeasible(testSoln));
     }
 
     @Test
     public void checkFeasibleFalseConstraints() {
-        double[] testCoeffs1 = {5, -5};
-        double[] testCoeffs2 = {3, 6};
+        double[] testCoeffs1 = { 5, -5 };
+        double[] testCoeffs2 = { 3, 6 };
         testC1.setCoefficients(testCoeffs1);
         testC1.setConstantTerm(1);
         testC2.setCoefficients(testCoeffs2);
@@ -133,14 +133,14 @@ public class TestLinearProgram {
         lp2.addConstraint(testC1);
         lp2.addConstraint(testC2);
 
-        double[] testSoln = {10,5};
+        double[] testSoln = { 10, 5 };
         assertFalse(lp2.checkFeasible(testSoln));
     }
 
     @Test
     public void checkFeasibleFalseNonNegativity() {
-        double[] testCoeffs1 = {5, -5};
-        double[] testCoeffs2 = {3, 6};
+        double[] testCoeffs1 = { 5, -5 };
+        double[] testCoeffs2 = { 3, 6 };
         testC1.setCoefficients(testCoeffs1);
         testC1.setConstantTerm(1);
         testC2.setCoefficients(testCoeffs2);
@@ -148,14 +148,14 @@ public class TestLinearProgram {
         lp2.addConstraint(testC1);
         lp2.addConstraint(testC2);
 
-        double[] testSoln = {1, -1};
+        double[] testSoln = { 1, -1 };
         assertFalse(lp2.checkFeasible(testSoln));
     }
 
     @Test
     public void constraintsToStrings() {
-        double[] testCoeffs1 = {5, -5};
-        double[] testCoeffs2 = {3, 6};
+        double[] testCoeffs1 = { 5, -5 };
+        double[] testCoeffs2 = { 3, 6 };
         testC1.setCoefficients(testCoeffs1);
         testC1.setConstantTerm(1);
         testC2.setCoefficients(testCoeffs2);
