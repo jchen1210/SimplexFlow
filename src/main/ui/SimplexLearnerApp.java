@@ -267,9 +267,11 @@ public class SimplexLearnerApp {
         }
     }
 
-    // EFFECTS: prints out the previous pivoting steps and tableau history from first to last
+    // EFFECTS: prints out the previous pivoting steps and tableau history from
+    // first to last
     private void doShowHistory() {
         
+
     }
 
     // EFFECTS: converts a comma separated list of numbers to an array of doubles
@@ -311,5 +313,11 @@ public class SimplexLearnerApp {
                 }
             }
         }
+    }
+
+    // EFFECTS: prints a given tableau and infers the number of variables and
+    // constraints
+    private static void printTableau(double[][] tab) {
+
     }
 }
