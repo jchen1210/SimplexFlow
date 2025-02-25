@@ -201,8 +201,8 @@ public class SolutionState {
     // (numVariables + numConstraints)
     // ie, some entry in the last row of the tableau (other than the final one) is
     // non-negative
-    // EFFECTS: suggests indices {i, j} for the next feasible pivot operation in the
-    // simplex algorithm according to Dantzig's rule (maximal coefficient)
+    // EFFECTS: suggests indices {i, j} (1-based, matrix indexing) for the next 
+    // feasible pivot operation in the simplex algorithm according to Dantzig's rule (maximal coefficient)
     // if no valid pivots are found, returns {-1, -1}
 
     // NOTE: (this method relies VERY heavily on theory from linear optimization)
