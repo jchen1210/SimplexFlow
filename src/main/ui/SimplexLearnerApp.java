@@ -267,6 +267,11 @@ public class SimplexLearnerApp {
         }
     }
 
+    // EFFECTS: prints out the previous pivoting steps and tableau history from first to last
+    private void doShowHistory() {
+        
+    }
+
     // EFFECTS: converts a comma separated list of numbers to an array of doubles
     private static double[] csvToArray(String csv) {
         String[] nums = csv.split(", ");
