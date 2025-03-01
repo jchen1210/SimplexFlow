@@ -19,15 +19,16 @@ All **bolded** terms are defined in a glossary at the bottom of this page.
 
 As a user, I want to be able to:
 - Initialize the number (arbitrary) of variables in my **linear program** (LP)
-- Set the coefficients of my **objective function**
+- Set the **objective function** of my LP
 - Add constraints to my LP (arbitrary number)
-- Set the coefficients of each constraint
 - Check if a given solution is **feasible** (satisfies all constraints)
 - Check the objective function value of a given solution
 - Solve my LP by manually performing **pivot** steps
 - Solve my LP by algorithmically performing pivoting steps
 - View a list of previous pivoting states (steps in solving)
 - Check if my LP has been solved (optimal)
+- Be reminded to save my current SolutionState when quitting and have the option to do so or not
+- On startup, choose to load a saved SolutionState or not
 
 ## Appendix
 
