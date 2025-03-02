@@ -1,12 +1,15 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writeable;
+
 import java.util.ArrayList;
 
 // Represents a linear program with an objective function and a list of constraints
 
 // INVARIANT: numVariables = objectiveFunction.numVariables = constraint.numVariables for each
 // constraint in constraints
-public class LinearProgram {
+public class LinearProgram implements Writeable {
     private int numVariables;
     private ArrayList<Constraint> constraints;
     private ObjectiveFunction objectiveFunction;
@@ -94,6 +97,14 @@ public class LinearProgram {
         output.add(impliedConstraintsString);
 
         return output;
+    }
+
+    @Override
+    // EFFECTS: returns this as a JSON Object
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+
+        return json;
     }
 
     public ArrayList<Constraint> getConstraints() {

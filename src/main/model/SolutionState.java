@@ -1,5 +1,8 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writeable;
+
 import java.util.ArrayList;
 
 // Represents a step in the solution of a linear program under the simplex algorithm.
@@ -27,7 +30,7 @@ import java.util.ArrayList;
 // the c_i entries come from the coefficients of the objective function
 // and the f entry comes from the NEGATION of the constant term in the objective function
 
-public class SolutionState {
+public class SolutionState implements Writeable{
     private int numVariables;
     private int numConstraints;
     private double[][] tableau;
@@ -233,6 +236,14 @@ public class SolutionState {
     // EFFECTS: sets the tableau of a solution state to t for testing purposes.
     public void setTableau(double[][] t) {
         tableau = t;
+    }
+
+    @Override
+    // EFFECTS: returns this as a JSON Object
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+
+        return json;
     }
 
     public double[][] getTableau() {

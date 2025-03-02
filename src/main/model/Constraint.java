@@ -1,11 +1,14 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writeable;
+
 // Represents a inequality constraint consisting of a linear combination
 // of arbitrarily valued variables each multiplied by a coefficient <= a constant term
 // ie, ax_1 + bx_2 + ... <= C
 
 // INVARIANT: coefficients.length = numVariables
-public class Constraint {
+public class Constraint implements Writeable {
     private double constantTerm;
     private double[] coefficients;
     private int numVariables;
@@ -67,6 +70,14 @@ public class Constraint {
         }
         output += String.format(" <= %.2f", Math.abs(constantTerm));
         return output;
+    }
+
+    @Override
+    // EFFECTS: returns this as a JSON Object
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+
+        return json;
     }
 
     public double[] getCoefficients() {

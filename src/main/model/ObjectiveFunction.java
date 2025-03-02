@@ -1,9 +1,12 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writeable;
+
 // represents a linear function of arbitrarily valued variables each multiplied
 // by a coefficient with a constant term added
 // ie, f(x_1,x_2,...) = ax_1 + bx_2 + ... + C
-public class ObjectiveFunction {
+public class ObjectiveFunction implements Writeable {
     private int numVariables;
     private double[] coefficients;
     private double constantTerm;
@@ -71,6 +74,14 @@ public class ObjectiveFunction {
             output += String.format(" - %.2f", Math.abs(constantTerm));
         }
         return output;
+    }
+
+    @Override
+    // EFFECTS: returns this as a JSON Object
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+
+        return json;
     }
 
     public int getNumVariables() {
