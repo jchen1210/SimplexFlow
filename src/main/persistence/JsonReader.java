@@ -18,7 +18,13 @@ public class JsonReader {
 
     // EFFECTS: reads SolutionState data from file and throws IOException if
     // an error occurs while reading
-    public SolutionState read() throws IOException {
+    public SolutionState readSS() throws IOException {
+        return null;
+    }
+
+    // EFFECTS: reads LinearProgram data from file and throws IOException if
+    // an error occurs while reading
+    public LinearProgram readLP() throws IOException {
         return null;
     }
 

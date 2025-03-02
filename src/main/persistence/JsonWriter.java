@@ -2,6 +2,7 @@ package persistence;
 
 import java.io.*;
 
+import model.LinearProgram;
 import model.SolutionState;
 
 public class JsonWriter {
@@ -25,6 +26,12 @@ public class JsonWriter {
     // MODIFIES: this
     // EFFECTS: writes a JSON representation of a SolutionState to file
     public void write(SolutionState ss) {
+
+    }
+
+    // MODIFIES: this
+    // EFFECTS: writes a JSON representation of a LinearProgram to file
+    public void write(LinearProgram lp) {
 
     }
 
