@@ -76,6 +76,9 @@ public class Constraint implements Writeable {
     // EFFECTS: returns this as a JSON Object
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
+        json.put("numVariables", numVariables);
+        json.put("coefficients", coefficients);
+        json.put("constantTerm", constantTerm);
 
         return json;
     }
