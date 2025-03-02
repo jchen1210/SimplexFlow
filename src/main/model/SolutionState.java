@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writeable;
 
@@ -244,6 +245,24 @@ public class SolutionState implements Writeable{
         JSONObject json = new JSONObject();
 
         return json;
+    }
+
+    // EFFECTS: returns the prev tableaus of this SolutionState as a JSON array
+    private JSONArray prevTableausToJson() {
+        JSONArray jsonArray = new JSONArray();
+        return jsonArray;
+    }
+
+    // EFFECTS: returns a given tableau as a JSON array
+    private JSONArray tableauToJson(double[][] t) {
+        JSONArray jsonArray = new JSONArray();
+        return jsonArray;
+    }
+
+    // EFFECTS: returns the prevPivots of this SolutionState as a JSON array
+    private JSONArray prevPivotsToJson() {
+        JSONArray jsonArray = new JSONArray();
+        return jsonArray;
     }
 
     public double[][] getTableau() {

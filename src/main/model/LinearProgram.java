@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writeable;
 
@@ -105,6 +106,13 @@ public class LinearProgram implements Writeable {
         JSONObject json = new JSONObject();
 
         return json;
+    }
+
+    // EFFECTS: returns constraints in this LP as a JSON array
+    private JSONArray constraintsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        return jsonArray;
     }
 
     public ArrayList<Constraint> getConstraints() {
