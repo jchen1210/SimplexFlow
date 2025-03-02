@@ -1,0 +1,33 @@
+{
+    "numVariables" : 3,
+    "constraints" : [
+        {
+            "numVariables" : 3,
+            "coefficients" : [
+            -1, 4, 2
+            ],
+            "constantTerm" : 2
+        },
+        {
+            "numVariables" : 3,
+            "coefficients" : [
+            1, 0, 1
+            ],
+            "constantTerm" : 8
+        },
+        {
+            "numVariables" : 3,
+            "coefficients" : [
+                3, 2, 1
+            ],
+            "constantTerm" : 9
+        }
+    ],
+    "objectiveFunction" : {
+        "numVariables" : 3,
+        "coefficients" : [
+            -3, 4, 0.5
+        ],
+        "constantTerm" : 3
+    }
+}
