@@ -93,10 +93,10 @@ public class SolutionState implements Writeable{
 
     // REQUIRES: 1 <= l <= (numVariables + numConstraints + 1)
     // 1 <= k <= numConstraints + 1
-    // tableau[i][j] != 0
+    // tableau[k-1][l-1] != 0
     // MODIFIES: this
-    // EFFECTS: performs a pivot operation on the a_lk entry of the simplex tableau
-    // (1-based index)
+    // EFFECTS: performs a pivot operation on the a_kl entry of the simplex tableau
+    // (1-based index, entering column l, exiting row k)
     // and returns a new SolutionState object corresponding to the new tableau with
     // the same
     // number of variables, constraints, and with the pivot location and current
