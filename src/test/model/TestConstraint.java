@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -74,5 +75,19 @@ public class TestConstraint {
         c2.setCoefficients(testCoeffs);
         c2.setConstantTerm(5);
         assertEquals("-3.00*x_1 + 3.00*x_2 - 1.00*x_3 + 0.00*x_4 + 0.14*x_5 <= 5.00", c2.toString());
+    }
+
+    @Test
+    public void testToJson() {
+        double[] testCoeffs = { 3, 6 };
+        c1.setCoefficients(testCoeffs);
+        c1.setConstantTerm(120);
+
+        JSONObject result = c1.toJson();
+        JSONObject expectedResult = new JSONObject(
+                "{\"numVariables\": 2,\"coefficients\": [3, 6],\"constantTerm\": 120}");
+
+
+        assertEquals(expectedResult.toString(), result.toString());
     }
 }
