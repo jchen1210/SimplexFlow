@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import model.LinearProgram;
 import model.SolutionState;
 
+// The structure of the test methods can be attributed to the provided JsonSerializationDemo
 public class TestJsonReader {
     private double delta = 0.0001;
 
@@ -85,9 +86,9 @@ public class TestJsonReader {
                     { 0, 1.0 / 2, 0, -3.0 / 2, -12 }
             };
             double[][] expectedTableau = {
-                    { 0, 1, 2.0 / 3, -1.0 / 3, 4.0 / 3 },
-                    { 1, 0, -1.0 / 3, 2.0 / 3, 10.0 / 3 },
-                    { 0, 0, -1.0 / 3, -4.0 / 3, -38.0 / 3 }
+                    { 0, 1, 0.666667, -0.333333, 1.333333 },
+                    { 1, 0, -0.333333, 0.666667, 3.333333 },
+                    { 0, 0, -0.333333, -1.333333, -12.666667 }
             };
             int[] expectedPrevPivot = { 2, 1 };
 

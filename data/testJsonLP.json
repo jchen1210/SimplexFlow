@@ -1,5 +1,12 @@
 {
     "numVariables" : 3,
+    "objectiveFunction" : {
+        "numVariables" : 3,
+        "coefficients" : [
+            -3, 4, 0.5
+        ],
+        "constantTerm" : 3
+    },
     "constraints" : [
         {
             "numVariables" : 3,
@@ -22,12 +29,5 @@
             ],
             "constantTerm" : 9
         }
-    ],
-    "objectiveFunction" : {
-        "numVariables" : 3,
-        "coefficients" : [
-            -3, 4, 0.5
-        ],
-        "constantTerm" : 3
-    }
+    ]
 }

@@ -16,6 +16,7 @@ import model.LinearProgram;
 import model.SolutionState;
 import model.ObjectiveFunction;
 
+// The structure of the test methods can be attributed to the provided JsonSerializationDemo
 public class TestJsonWriter {
     private LinearProgram lp = new LinearProgram(3);
     private SolutionState ss;
@@ -98,7 +99,7 @@ public class TestJsonWriter {
     public void testWriteSSWithPrevs() {
         try {
 
-            ss.pivot(2, 1);
+            ss.pivot(1, 2);
             JsonWriter writer = new JsonWriter("./data/testWriteSSWithPrevs.json");
             writer.open();
             writer.write(ss);
@@ -111,7 +112,7 @@ public class TestJsonWriter {
                     { -1, 4, 2, 1, 0, 0, 2 },
                     { 1, 0, 1, 0, 1, 0, 8 },
                     { 3, 2, 1, 0, 0, 1, 9 },
-                    { 3, -4, -0.5, 0, 0, 0, -3 }
+                    { -3, 4, 0.5, 0, 0, 0, -3 }
             }; 
 
             double[][] expectedTableau = {
@@ -120,17 +121,20 @@ public class TestJsonWriter {
                 {3.5, 0, 0, -0.5, 0, 1, 8},
                 {-2, 0, -1.5, -1, 0, 0, -5}
             };
-            int[] expectedPrevPivot = {2,1};
+            int[] expectedPrevPivot = {1,2};
 
             assertEquals(3, testOutput.getNumVariables());
             assertEquals(3, testOutput.getNumConstraints());
-            assertTrue(Arrays.deepEquals(expectedTableau, testOutput.getTableau()));
 
             assertEquals(1, testOutput.getPrevPivots().size());
             assertArrayEquals(expectedPrevPivot, testOutput.getPrevPivots().get(0));
 
             assertEquals(1, testOutput.getPrevTableaus().size());
             assertTrue(Arrays.deepEquals(expectedPrevTableau, testOutput.getPrevTableaus().get(0)));
+
+            assertTrue(Arrays.deepEquals(expectedTableau, testOutput.getTableau()));
+
+            
 
 
         } catch (IOException e) {
