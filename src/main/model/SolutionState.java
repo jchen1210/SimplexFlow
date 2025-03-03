@@ -243,6 +243,11 @@ public class SolutionState implements Writeable{
     // EFFECTS: returns this as a JSON Object
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
+        json.put("numVariables", numVariables);
+        json.put("numConstraints", numConstraints);
+        json.put("tableau", tableauToJson(tableau));
+        json.put("prevTableaus", prevTableausToJson());
+        json.put("prevPivots", prevPivotsToJson());
 
         return json;
     }
@@ -250,18 +255,27 @@ public class SolutionState implements Writeable{
     // EFFECTS: returns the prev tableaus of this SolutionState as a JSON array
     private JSONArray prevTableausToJson() {
         JSONArray jsonArray = new JSONArray();
+        for (double[][] t : prevTableaus) {
+            jsonArray.put(tableauToJson(t));
+        }
         return jsonArray;
     }
 
     // EFFECTS: returns a given tableau as a JSON array
     private JSONArray tableauToJson(double[][] t) {
         JSONArray jsonArray = new JSONArray();
+        for (double[] row : t) {
+            jsonArray.put(row);
+        }
         return jsonArray;
     }
 
     // EFFECTS: returns the prevPivots of this SolutionState as a JSON array
     private JSONArray prevPivotsToJson() {
         JSONArray jsonArray = new JSONArray();
+        for (int[] p : prevPivots) {
+            jsonArray.put(p);
+        }
         return jsonArray;
     }
 

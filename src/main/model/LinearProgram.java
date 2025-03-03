@@ -104,6 +104,9 @@ public class LinearProgram implements Writeable {
     // EFFECTS: returns this as a JSON Object
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
+        json.put("numVariables", numVariables);
+        json.put("constraints", constraintsToJson());
+        json.put("objectiveFunction", objectiveFunction.toJson());
 
         return json;
     }
@@ -111,6 +114,9 @@ public class LinearProgram implements Writeable {
     // EFFECTS: returns constraints in this LP as a JSON array
     private JSONArray constraintsToJson() {
         JSONArray jsonArray = new JSONArray();
+        for (Constraint c : constraints) {
+            jsonArray.put(c.toJson());
+        }
 
         return jsonArray;
     }
