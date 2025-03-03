@@ -38,6 +38,7 @@ public class SolutionState implements Writeable{
     private ArrayList<double[][]> prevTableaus;
     private ArrayList<int[]> prevPivots;
 
+    // MODIFIES: this
     // EFFECTS: produces a solution state corresponding to the inputted lp with
     // no prior tableaus or pivots and:
     // numVariables = lp.getNumVariables() &
@@ -54,6 +55,13 @@ public class SolutionState implements Writeable{
         prevPivots = new ArrayList<int[]>();
         prevTableaus = new ArrayList<double[][]>();
         tableau = convertToTableau(lp);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: produces a solution state with n variables and m constraints, zero tableau
+    // of appropriate dimensions, with no previous tableaus or pivots
+    public SolutionState(int n, int m) {
+        
     }
 
     // EFFECTS: produces a simplex tableau from a given Linear Program with
