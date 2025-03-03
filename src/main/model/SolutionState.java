@@ -31,7 +31,7 @@ import java.util.ArrayList;
 // the c_i entries come from the coefficients of the objective function
 // and the f entry comes from the NEGATION of the constant term in the objective function
 
-public class SolutionState implements Writeable{
+public class SolutionState implements Writeable {
     private int numVariables;
     private int numConstraints;
     private double[][] tableau;

@@ -39,6 +39,7 @@ public class TestJsonReader {
         }
     }
 
+    @SuppressWarnings("methodlength")
     @Test
     public void testReadLP() {
         JsonReader reader = new JsonReader("./data/testJsonLP.json");
@@ -74,6 +75,7 @@ public class TestJsonReader {
         }
     }
 
+    @SuppressWarnings("methodlength")
     @Test
     public void testReadSS() {
         JsonReader reader = new JsonReader("./data/testJsonSS.json");

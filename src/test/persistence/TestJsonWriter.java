@@ -95,6 +95,7 @@ public class TestJsonWriter {
         }
     }
 
+    @SuppressWarnings("methodlength")
     @Test
     public void testWriteSSWithPrevs() {
         try {

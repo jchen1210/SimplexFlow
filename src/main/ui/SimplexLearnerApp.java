@@ -25,6 +25,7 @@ public class SimplexLearnerApp {
 
     // EFFECTS: runs the Simplex learner app
     public SimplexLearnerApp() {
+        solutionStage = false;
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
         runApp();
@@ -34,11 +35,11 @@ public class SimplexLearnerApp {
     // EFFECTS: processes user inputs
     private void runApp() {
         boolean keepGoing = true;
-        String command = null;
-        solutionStage = false;
 
         initApp();
-        doLinearProgramSetup();
+        if (!doPromptLoad()) {
+            doLinearProgramSetup();
+        }
 
         while (keepGoing) {
             if (solutionStage) {
@@ -47,13 +48,13 @@ public class SimplexLearnerApp {
                 displaySetupMenu();
             }
 
-            command = input.next();
+            String command = input.next();
             input.nextLine();
             System.out.println();
 
             if (command.equals("q")) {
                 keepGoing = false;
-
+                doOfferSave();
             } else if (solutionStage) {
                 processSolutionCommand(command);
             } else {
@@ -65,35 +66,76 @@ public class SimplexLearnerApp {
     // MODIFIES: this
     // EFFECTS: prompts the user to load from saved file
     private boolean doPromptLoad() {
-        
+        System.out.println("Would you like to load from save? (y/n)");
+        String command = input.nextLine();
+        if (command.equals("y")) {
+            try {
+                loadSS();
+                solutionStage = true;
+                return true;
+            } catch (Exception e) {
+                System.out.println("No solution state saved, trying LP!");
+                try {
+                    loadLP();
+                    return true;
+                } catch (Exception x) {
+                    System.out.println("Unable to read from file: " + JSON_STORE);
+                    return false;
+                }
+            }
+        }
         return false;
     }
 
     // MODIFIES: this
     // EFFECTS: loads SS from file
     private void loadSS() throws IOException {
-        
+        ss = jsonReader.readSS();
+        System.out.println("Loaded ss from " + JSON_STORE);
     }
 
     // MODIFIES: this
     // EFFECTS: loads LP from file
     private void loadLP() throws IOException {
-        
+        lp = jsonReader.readLP();
+        System.out.println("Loaded lp from " + JSON_STORE);
     }
 
     // EFFECTS: prompts the user to save their current state
     private void doOfferSave() {
-        
+        System.out.println("Would you like to save? (y/n)");
+        String command = input.nextLine();
+        if (command.equals("y")) {
+            if (solutionStage) {
+                saveSS();
+            } else {
+                saveLP();
+            }
+        }
     }
 
     // EFFECTS: saves the LP to file
     private void saveLP() {
-        
+        try {
+            jsonWriter.open();
+            jsonWriter.write(lp);
+            jsonWriter.close();
+            System.out.println("Saved LP to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
     }
 
     // EFFECTS: saves the SS to file   
     private void saveSS() {
-        
+        try {
+            jsonWriter.open();
+            jsonWriter.write(ss);
+            jsonWriter.close();
+            System.out.println("Saved solution state to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
     }
 
     // MODIFIES: this
@@ -376,6 +418,7 @@ public class SimplexLearnerApp {
         }
     }
 
+    @SuppressWarnings("methodlength")
     // EFFECTS: prints a given tableau and infers the number of variables and
     // constraints
     private static void printTableau(double[][] tab) {
