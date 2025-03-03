@@ -79,6 +79,18 @@ public class TestSolutionState {
     }
 
     @Test
+    public void testConstructFromDimensions() {
+        SolutionState testSS = new SolutionState(3, 4);
+
+        double[][] expectedTableau = new double[5][8];
+        assertEquals(3, testSS.getNumVariables());
+        assertEquals(4, testSS.getNumConstraints());
+        assertTrue(testSS.getPrevPivots().isEmpty());
+        assertTrue(testSS.getPrevTableaus().isEmpty());
+        assertTrue(Arrays.deepEquals(expectedTableau, testSS.getTableau()));
+    }
+
+    @Test
     public void testBigConvertToTableau() {
         double[][] expectedTableau = {
                 { 0, 0, 0, 1, 0, 0, 0 },

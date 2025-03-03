@@ -61,7 +61,11 @@ public class SolutionState implements Writeable{
     // EFFECTS: produces a solution state with n variables and m constraints, zero tableau
     // of appropriate dimensions, with no previous tableaus or pivots
     public SolutionState(int n, int m) {
-        
+        numVariables = n;
+        numConstraints = m;
+        prevPivots = new ArrayList<int[]>();
+        prevTableaus = new ArrayList<double[][]>();
+        tableau = new double[m + 1][n + m + 1];
     }
 
     // EFFECTS: produces a simplex tableau from a given Linear Program with
