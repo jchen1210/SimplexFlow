@@ -74,6 +74,26 @@ public class JsonReader {
     // MODIFIES: lp
     // EFFECTS: parses constraint from JSON Object and adds to LP
     private void addConstraint(LinearProgram lp, JSONObject json) {
+
+        int numVariables = json.getInt("numVariables");
+        double constantTerm = json.getDouble("constantTerm");
+        JSONArray jsonCoeffs = json.getJSONArray("coefficients");
+
+        double[] coeffs = new double[jsonCoeffs.length()];
+        for (int i = 0; i < jsonCoeffs.length(); i++) {
+            coeffs[i] = jsonCoeffs.getDouble(i);
+        }
+
+        Constraint c = new Constraint(numVariables);
+        c.setCoefficients(coeffs);
+        c.setConstantTerm(constantTerm);
+        
+        lp.addConstraint(c);
+    }
+
+    // MODIFIES: lp
+    // EFFECTS: parses ObjectiveFunction from JSON Object and sets it in LP
+    private void setObjF(LinearProgram lp, JSONObject json) {
         JSONObject jsonObjF = json.getJSONObject("objectiveFunction");
 
         int numVariables = jsonObjF.getInt("numVariables");
@@ -90,25 +110,6 @@ public class JsonReader {
         objF.setConstantTerm(constantTerm);
         
         lp.setObjF(objF);
-    }
-
-    // MODIFIES: lp
-    // EFFECTS: parses ObjectiveFunction from JSON Object and sets it in LP
-    private void setObjF(LinearProgram lp, JSONObject json) {
-        int numVariables = json.getInt("numVariables");
-        double constantTerm = json.getDouble("constantTerm");
-        JSONArray jsonCoeffs = json.getJSONArray("coefficients");
-
-        double[] coeffs = new double[jsonCoeffs.length()];
-        for (int i = 0; i < jsonCoeffs.length(); i++) {
-            coeffs[i] = jsonCoeffs.getDouble(i);
-        }
-
-        Constraint c = new Constraint(numVariables);
-        c.setCoefficients(coeffs);
-        c.setConstantTerm(constantTerm);
-        
-        lp.addConstraint(c);
     }
 
     // EFFECTS: parses SolutionState from JSON Object and returns it
