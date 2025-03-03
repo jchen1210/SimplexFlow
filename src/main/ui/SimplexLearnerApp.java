@@ -4,19 +4,29 @@ import model.ObjectiveFunction;
 import model.Constraint;
 import model.LinearProgram;
 import model.SolutionState;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
 
 // Simplex learner application
+// The methods relating to data persistence are attributeable to the JsonSerializationDemo provided
 public class SimplexLearnerApp {
+    private static final String JSON_STORE = "./data/save.json";
     private Scanner input;
     private LinearProgram lp;
     private SolutionState ss;
     private boolean solutionStage;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: runs the Simplex learner app
     public SimplexLearnerApp() {
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         runApp();
     }
 
@@ -43,12 +53,47 @@ public class SimplexLearnerApp {
 
             if (command.equals("q")) {
                 keepGoing = false;
+
             } else if (solutionStage) {
                 processSolutionCommand(command);
             } else {
                 processSetupCommand(command);
             }
         }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: prompts the user to load from saved file
+    private boolean doPromptLoad() {
+        
+        return false;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads SS from file
+    private void loadSS() throws IOException {
+        
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads LP from file
+    private void loadLP() throws IOException {
+        
+    }
+
+    // EFFECTS: prompts the user to save their current state
+    private void doOfferSave() {
+        
+    }
+
+    // EFFECTS: saves the LP to file
+    private void saveLP() {
+        
+    }
+
+    // EFFECTS: saves the SS to file   
+    private void saveSS() {
+        
     }
 
     // MODIFIES: this
