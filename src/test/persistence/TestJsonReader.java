@@ -21,7 +21,7 @@ public class TestJsonReader {
     public void testReadSSNonExistentFile() {
         JsonReader reader = new JsonReader("./data/noSuchFile.json");
         try {
-            SolutionState ss = reader.readSS();
+            reader.readSS();
             fail("IOException expected");
         } catch (IOException e) {
             // pass
@@ -32,7 +32,7 @@ public class TestJsonReader {
     public void testReadLPNonExistentFile() {
         JsonReader reader = new JsonReader("./data/noSuchFile.json");
         try {
-            LinearProgram lp = reader.readLP();
+            reader.readLP();
             fail("IOException expected");
         } catch (IOException e) {
             // pass
