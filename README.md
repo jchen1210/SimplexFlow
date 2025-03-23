@@ -30,6 +30,19 @@ As a user, I want to be able to:
 - Be reminded to save my current SolutionState when quitting and have the option to do so or not
 - On startup, choose to load a saved SolutionState or not
 
+## Instructions for End User
+
+- You can generate the first required action related to the user story "adding multiple Xs to a Y" by...
+Clicking the "add constraint" button to be prompted to add a new constraint to the LP
+- You can generate the second required action related to the user story "adding multiple Xs to a Y" by...
+Clicking the "X" button next to any constraint in the LP menu to delete it
+- You can locate my visual component by...
+Looking at the load menu which is displayed upon application startup
+- You can save the state of my application by...
+Clicking the "Save" button which will be displayed upon pressing the "Quit" button
+- You can reload the state of my application by...
+Clicking the "Load from save" button which is displayed in the load menu on application startup
+
 ## Appendix
 
 For example, if one were trying to maximize the profit for a farming operation where each acre of wheat yielded \$10 of profit, while each acre of corn yields \$5 of profit, we can let $x,y$ be the number of acres allocated to wheat and corn respectively. This yields the *objective function* we are trying to maximize:
