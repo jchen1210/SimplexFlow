@@ -33,14 +33,19 @@ As a user, I want to be able to:
 ## Instructions for End User
 
 - You can generate the first required action related to the user story "adding multiple Xs to a Y" by...
+
 Clicking the "add constraint" button to be prompted to add a new constraint to the LP
 - You can generate the second required action related to the user story "adding multiple Xs to a Y" by...
+
 Clicking the "X" button next to any constraint in the LP menu to delete it
 - You can locate my visual component by...
+
 Looking at the load menu which is displayed upon application startup
 - You can save the state of my application by...
+
 Clicking the "Save" button which will be displayed upon pressing the "Quit" button
 - You can reload the state of my application by...
+
 Clicking the "Load from save" button which is displayed in the load menu on application startup
 
 ## Appendix
