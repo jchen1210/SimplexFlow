@@ -133,14 +133,40 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
     private void addConstraintPanel() {
         constraintPanel = new JPanel();
         constraintPanel.setBounds(30, 160, 600, 350);
-        constraintPanel.setLayout(new BoxLayout(constraintPanel, BoxLayout.Y_AXIS));
+        constraintPanel.setLayout(null);
         constraintPanel.setVisible(true);
         constraintPanel.setBackground(Color.LIGHT_GRAY);
         
+        JLabel title = new JLabel("Constraints:");
+        title.setBounds(5, 5, 200, 20);
+        constraintPanel.add(title);
 
+        addConstraintsList();
 
-        
+        addAddConstraintButton();
+        addClearConstraintsButton();
+
         this.add(constraintPanel);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: adds a panel with each individual constraint inside of it to the constraint panel
+    private void addConstraintsList() {
+        JPanel constraintsList = new JPanel();
+        constraintsList.setBounds(15, 25, 600, 200);
+        constraintsList.setLayout(null);
+        constraintsList.setVisible(true);
+        constraintsList.setBackground(Color.LIGHT_GRAY);
+
+        int step = 15;
+        for (int i = 0; i < lp.constraintsToStrings().size(); i++) {
+            String s = lp.constraintsToStrings().get(i);
+            JLabel constraintLabel = new JLabel(s);
+            constraintLabel.setBounds(0, i * step, 300, step);
+            constraintsList.add(constraintLabel);
+        }
+
+        constraintPanel.add(constraintsList);
     }
 
     // EFFECTS: initializes the window of the UI to house other components
@@ -189,11 +215,6 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
         jsonReader = new JsonReader(JSON_STORE);
     }
 
-    private void failToLoad() {
-        JLabel failLabel = new JLabel("Failed to load from save");
-        loadPanel.add(failLabel);
-    }
-
     // MODIFIES: this
     // EFFECTS: creates a quit button and adds to frame
     private void addQuitButton() {
@@ -217,35 +238,25 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
     }
 
     // MODIFIES: this
-    // EFFECTS: prompts user to set the number of variables in their LP
-    private void doLinearProgramSetup() {
-        loadButton.setVisible(false);
-        skipLoadButton.setVisible(false);
-
-        numVarTextField = new JTextField();
-        numVarTextField.setBounds(100, 50, 200, 30);
-        loadPanel.add(numVarTextField);
-
-        loadPanel.revalidate();
-        loadPanel.repaint();
-
-        submitNumVarButton = new JButton("Submit");
-        submitNumVarButton.setBounds(150, 100, 100, 40);
-        submitNumVarButton.addActionListener(this);
-
-        loadPanel.add(submitNumVarButton);
+    // EFFECTS: adds a button to the constraints panel that adds a constraint
+    private void addAddConstraintButton() {
+        addConstraintButton = new JButton();
+        addConstraintButton.setBounds(5, 290, 200, 25);
+        addConstraintButton.addActionListener(this);
+        addConstraintButton.setText("Add constraint");
+        addConstraintButton.setFocusable(false);
+        constraintPanel.add(addConstraintButton);
     }
 
     // MODIFIES: this
-    // EFFECTS: performs load operation from save
-    private void doLoad() {
-        try {
-            loadLP();
-            loadPanel.setVisible(false);
-            finishMenuSetup();
-        } catch (IOException ioe) {
-            failToLoad();
-        }
+    // EFFECTS: adds a button to the constraints panel that clears all constraints
+    private void addClearConstraintsButton() {
+        clearConstraintsButton = new JButton();
+        clearConstraintsButton.setBounds(5, 320, 200, 25);
+        clearConstraintsButton.addActionListener(this);
+        clearConstraintsButton.setText("Clear ALL Constraints");
+        clearConstraintsButton.setFocusable(false);
+        constraintPanel.add(clearConstraintsButton);
     }
 
     // MODIFIES: this
@@ -283,6 +294,26 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
     }
 
     // MODIFIES: this
+    // EFFECTS: prompts user to set the number of variables in their LP
+    private void doLinearProgramSetup() {
+        loadButton.setVisible(false);
+        skipLoadButton.setVisible(false);
+
+        numVarTextField = new JTextField();
+        numVarTextField.setBounds(100, 50, 200, 30);
+        loadPanel.add(numVarTextField);
+
+        loadPanel.revalidate();
+        loadPanel.repaint();
+
+        submitNumVarButton = new JButton("Submit");
+        submitNumVarButton.setBounds(150, 100, 100, 40);
+        submitNumVarButton.addActionListener(this);
+
+        loadPanel.add(submitNumVarButton);
+    }
+
+    // MODIFIES: this
     // EFFECTS: creates an LP with the number of variables in the numVarTextField
     private void createLP() {
         try {
@@ -306,6 +337,24 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null, "Unable to write to file: " + JSON_STORE);
         }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: performs load operation from save
+    private void doLoad() {
+        try {
+            loadLP();
+            loadPanel.setVisible(false);
+            finishMenuSetup();
+        } catch (IOException ioe) {
+            failToLoad();
+        }
+    }
+
+    // EFFECTS: shows a label on the load panel that tells user that load failed
+    private void failToLoad() {
+        JLabel failLabel = new JLabel("Failed to load from save");
+        loadPanel.add(failLabel);
     }
 
     // MODIFIES: this
