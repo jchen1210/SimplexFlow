@@ -85,7 +85,7 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
         objFLabel.setBounds(5, 25, 400, 20);
         objPanel.add(objFLabel);
 
-        JLabel imageLabel = new JLabel(new ImageIcon("./data/polytope.png"));
+        JLabel imageLabel = new JLabel(new ImageIcon("./resources/polytope.png"));
         imageLabel.setBounds(450, 5, 130, 130);
         objPanel.add(imageLabel);
 
