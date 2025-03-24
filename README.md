@@ -34,7 +34,7 @@ As a user, I want to be able to:
 
 - You can generate the first required action related to the user story "adding multiple Xs to a Y" by...
 
-Clicking the "add constraint" button to be prompted to add a new constraint to the LP
+Clicking the "add constraint" button to add a new constraint to the constraint list from the data inputted into the 2 nearby text fields
 - You can generate the second required action related to the user story "adding multiple Xs to a Y" by...
 
 Clicking the "Delete all constraints" button to clear the list of constraints
