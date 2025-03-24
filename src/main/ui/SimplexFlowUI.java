@@ -16,6 +16,7 @@ import javax.swing.*;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -23,33 +24,84 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-
-
 // Represents the ui for the SimplexFlow app
 // The methods relating to data persistence are attributeable to the JsonSerializationDemo provided
 public class SimplexFlowUI extends JFrame implements ActionListener {
     private static final int WIDTH = 800;
-	private static final int HEIGHT = 600;
+    private static final int HEIGHT = 600;
     private static final String JSON_STORE = "./data/save.json";
     private LinearProgram lp;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
     private JPanel loadPanel;
+    private JPanel objPanel;
 
     private JButton loadButton;
     private JButton skipLoadButton;
     private JButton saveButton;
-    private JButton submitButton;
-    
-    private JTextField numVarTextField;
-    
+    private JButton submitNumVarButton;
+    private JButton quitButton;
+    private JButton overwriteButton;
 
+    private JTextField numVarTextField;
+    private JTextField objCoeffsField;
+    private JTextField objConstantField;
 
     // EFFECTS: runs the UI of the SimplexFlow app
     public SimplexFlowUI() {
         initWindow();
-        loadMenu();
+        addLoadMenu();
+
+        addQuitButton();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: finishes the UI setup after the LP has been initialized
+    private void finishMenuSetup() {
+        addObjPanel();
+        addConstraintPanel();
+        addSaveButton();
+
+        revalidate();
+        repaint();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: adds a panel that houses the objective function settings
+    private void addObjPanel() {
+        objPanel = new JPanel();
+        objPanel.setBounds(30, 30, 600, 180);
+        objPanel.setLayout(new BoxLayout(objPanel, BoxLayout.Y_AXIS));
+        objPanel.setVisible(true);
+        objPanel.setBackground(Color.LIGHT_GRAY);
+
+        objPanel.add(new JLabel("Objective Function:"));
+        objPanel.add(new JLabel(lp.getObjF().toString()));
+
+        objCoeffsField = new JTextField(20);
+        objCoeffsField.setMaximumSize(new Dimension(200, 30));
+        objPanel.add(new JLabel("OBF coefficients as a csv: "));
+        objPanel.add(objCoeffsField);
+
+        objConstantField = new JTextField(20);
+        objConstantField.setMaximumSize(new Dimension(200, 30));
+        objPanel.add(new JLabel("Constant term: "));
+        objPanel.add(objConstantField);
+
+        overwriteButton = new JButton("Overwrite OBF");
+        overwriteButton.addActionListener(this);
+        overwriteButton.setFocusable(false);
+
+        objPanel.add(overwriteButton);
+
+        add(objPanel);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: adds a panel that houses the constraint list and settings
+    private void addConstraintPanel() {
+
     }
 
     // EFFECTS: initializes the window of the UI to house other components
@@ -57,17 +109,17 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
         setTitle("SimplexFlow");
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setVisible(true);
+        setVisible(true);
         setResizable(false);
         setLayout(null);
     }
 
     // MODIFIES: this
-    // EFFECTS: shows the save menu and prompts user to choose whether to load from previous
-    // save or not
-    public void loadMenu() {
+    // EFFECTS: shows the save menu and prompts user to choose whether to load from
+    // previous save or not
+    public void addLoadMenu() {
         initPersistence();
-        
+
         loadButton = new JButton();
         loadButton.setBounds(70, 125, 130, 50);
         loadButton.addActionListener(this);
@@ -91,16 +143,38 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
         add(loadPanel);
     }
 
-    public void failToLoad() {
-        JLabel failLabel = new JLabel("Failed to load from save");
-        loadPanel.add(failLabel);
-    }
-
     // MODIFIES: this
     // EFFECTS: initializes the data persistence features of the application
     private void initPersistence() {
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
+    }
+
+    private void failToLoad() {
+        JLabel failLabel = new JLabel("Failed to load from save");
+        loadPanel.add(failLabel);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: creates a quit button and adds to frame
+    private void addQuitButton() {
+        quitButton = new JButton("Quit");
+        quitButton.setBounds(WIDTH - 120, HEIGHT - 80, 100, 40);
+        quitButton.addActionListener(this);
+        quitButton.setFocusable(false);
+
+        add(quitButton);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: creates a save button and adds to frame
+    private void addSaveButton() {
+        saveButton = new JButton("Save");
+        saveButton.setBounds(WIDTH - 120, HEIGHT - 120, 100, 40);
+        saveButton.addActionListener(this);
+        saveButton.setFocusable(false);
+
+        add(saveButton);
     }
 
     // MODIFIES: this
@@ -116,12 +190,11 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
         loadPanel.revalidate();
         loadPanel.repaint();
 
-        submitButton = new JButton("Submit");
-        submitButton.setBounds(150, 100, 100, 40);
-        submitButton.addActionListener(this);
+        submitNumVarButton = new JButton("Submit");
+        submitNumVarButton.setBounds(150, 100, 100, 40);
+        submitNumVarButton.addActionListener(this);
 
-        loadPanel.add(submitButton);
-
+        loadPanel.add(submitNumVarButton);
     }
 
     // MODIFIES: this
@@ -130,11 +203,11 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
         try {
             loadLP();
             loadPanel.setVisible(false);
+            finishMenuSetup();
         } catch (IOException ioe) {
             failToLoad();
         }
     }
-    
 
     // MODIFIES: this
     // EFFECTS: handles user actions
@@ -145,9 +218,29 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
             doLoad();
         } else if (source == skipLoadButton) {
             doLinearProgramSetup();
-        } else if (source == submitButton) {
+        } else if (source == submitNumVarButton) {
             createLP();
+        } else if (source == quitButton) {
+            System.exit(0);
+        } else if (source == saveButton) {
+            doSave();
+        } else if (source == overwriteButton) {
+            overwriteObjF();
         }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: overwrites the OBF with the inputs in the relevant text fields
+    private void overwriteObjF() {
+        ObjectiveFunction objF = lp.getObjF();
+        objF.setConstantTerm(Integer.parseInt(objConstantField.getText()));
+        objF.setCoefficients(csvToArray(objCoeffsField.getText()));
+
+        JLabel objFunctionLabel = (JLabel) objPanel.getComponent(1);
+        objFunctionLabel.setText(lp.getObjF().toString());
+
+        objPanel.revalidate();
+        objPanel.repaint();
     }
 
     // MODIFIES: this
@@ -157,10 +250,23 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
             int userInput = Integer.parseInt(numVarTextField.getText());
             lp = new LinearProgram(userInput);
             loadPanel.setVisible(false);
+            finishMenuSetup();
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(loadPanel, "Please enter a valid integer!");
         }
-        
+    }
+
+    // MODIFIES: save.json
+    // EFFECTS: prompts user to write current LP to json
+    private void doSave() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(lp);
+            jsonWriter.close();
+            JOptionPane.showMessageDialog(null, "Saved LP to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Unable to write to file: " + JSON_STORE);
+        }
     }
 
     // MODIFIES: this
