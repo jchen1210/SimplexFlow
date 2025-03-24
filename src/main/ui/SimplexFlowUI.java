@@ -51,6 +51,7 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
     // EFFECTS: runs the UI of the SimplexFlow app
     public SimplexFlowUI() {
         initWindow();
+        initPersistence();
         addLoadMenu();
 
         addQuitButton();
@@ -83,6 +84,10 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
         JLabel objFLabel = new JLabel(lp.getObjF().toString());
         objFLabel.setBounds(5, 25, 400, 20);
         objPanel.add(objFLabel);
+
+        JLabel imageLabel = new JLabel(new ImageIcon("./data/polytope.png"));
+        imageLabel.setBounds(450, 5, 130, 130);
+        objPanel.add(imageLabel);
 
         addOverwriteMenu();
         this.add(objPanel);
@@ -208,22 +213,22 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
         setVisible(true);
         setResizable(false);
         setLayout(null);
+
     }
 
     // MODIFIES: this
     // EFFECTS: shows the save menu and prompts user to choose whether to load from
     // previous save or not
     public void addLoadMenu() {
-        initPersistence();
 
         loadButton = new JButton();
-        loadButton.setBounds(70, 125, 130, 50);
+        loadButton.setBounds(70, 270, 130, 25);
         loadButton.addActionListener(this);
         loadButton.setText("Load from save");
         loadButton.setFocusable(false);
 
         skipLoadButton = new JButton();
-        skipLoadButton.setBounds(220, 125, 100, 50);
+        skipLoadButton.setBounds(220, 270, 100, 25);
         skipLoadButton.addActionListener(this);
         skipLoadButton.setText("New LP");
         skipLoadButton.setFocusable(false);

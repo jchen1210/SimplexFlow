@@ -40,7 +40,7 @@ Clicking the "add constraint" button to add a new constraint to the constraint l
 Clicking the "Delete all constraints" button to clear the list of constraints
 - You can locate my visual component by...
 
-Looking at the load menu which is displayed upon application startup
+Looking at the right side of the objective function panel which is displayed after the create/load from save menu has closed
 - You can save the state of my application by...
 
 Clicking the "Save" button which will be displayed upon pressing the "Quit" button
