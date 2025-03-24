@@ -3,26 +3,22 @@ package ui;
 import model.ObjectiveFunction;
 import model.Constraint;
 import model.LinearProgram;
-import model.SolutionState;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Scanner;
 
 import javax.swing.*;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 // Represents the ui for the SimplexFlow app
 // The methods relating to data persistence are attributeable to the JsonSerializationDemo provided
@@ -36,6 +32,7 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
 
     private JPanel loadPanel;
     private JPanel objPanel;
+    private JPanel constraintPanel;
 
     private JButton loadButton;
     private JButton skipLoadButton;
@@ -43,6 +40,8 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
     private JButton submitNumVarButton;
     private JButton quitButton;
     private JButton overwriteButton;
+    private JButton clearConstraintsButton;
+    private JButton addConstraintButton;
 
     private JTextField numVarTextField;
     private JTextField objCoeffsField;
@@ -71,37 +70,77 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
     // EFFECTS: adds a panel that houses the objective function settings
     private void addObjPanel() {
         objPanel = new JPanel();
-        objPanel.setBounds(30, 30, 600, 180);
-        objPanel.setLayout(new BoxLayout(objPanel, BoxLayout.Y_AXIS));
+        objPanel.setBounds(30, 10, 600, 140);
+        objPanel.setLayout(null);
         objPanel.setVisible(true);
         objPanel.setBackground(Color.LIGHT_GRAY);
 
-        objPanel.add(new JLabel("Objective Function:"));
-        objPanel.add(new JLabel(lp.getObjF().toString()));
+        JLabel title = new JLabel("Objective Function:");
+        title.setBounds(5, 5, 200, 20);
+        objPanel.add(title);
 
-        objCoeffsField = new JTextField(20);
-        objCoeffsField.setMaximumSize(new Dimension(200, 30));
-        objPanel.add(new JLabel("OBF coefficients as a csv: "));
-        objPanel.add(objCoeffsField);
+        JLabel objFLabel = new JLabel(lp.getObjF().toString());
+        objFLabel.setBounds(5, 25, 400, 20);
+        objPanel.add(objFLabel);
 
-        objConstantField = new JTextField(20);
-        objConstantField.setMaximumSize(new Dimension(200, 30));
-        objPanel.add(new JLabel("Constant term: "));
-        objPanel.add(objConstantField);
+        addOverwriteMenu();
+        this.add(objPanel);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: creates the overwrite menu for the objective function
+    private void addOverwriteMenu() {
+        JPanel overwriteMenu = new JPanel();
+        overwriteMenu.setLayout(null);
+        overwriteMenu.setVisible(true);
+        overwriteMenu.setBackground(Color.LIGHT_GRAY);
+        overwriteMenu.setBounds(5, 45, 400, 100);
+
+        JPanel subPanel = new JPanel();
+        subPanel.setVisible(true);
+        subPanel.setLayout(new GridLayout(2, 2, 5, 0));
+        subPanel.setBackground(Color.LIGHT_GRAY);
+        subPanel.setBounds(0, 0, 400, 60);
+
+        subPanel.add(new JLabel("OBF coefficients as a csv: "));
+        subPanel.add(new JLabel("Constant term: "));
+        objCoeffsField = makeSmallTextField(subPanel);
+        objConstantField = makeSmallTextField(subPanel);
 
         overwriteButton = new JButton("Overwrite OBF");
         overwriteButton.addActionListener(this);
         overwriteButton.setFocusable(false);
+        overwriteButton.setBounds(0, 65, 150, 25);
 
-        objPanel.add(overwriteButton);
+        overwriteMenu.add(subPanel);
+        overwriteMenu.add(overwriteButton);
 
-        add(objPanel);
+        objPanel.add(overwriteMenu);
+        objPanel.revalidate();
+        objPanel.repaint();
+    }
+
+    // EFFECTS: creates a small text field and adds it to destination
+    private JTextField makeSmallTextField(Container destination) {
+        JTextField output = new JTextField(20);
+        output.setMaximumSize(new Dimension(200, 20));
+        destination.add(output);
+        return output;
     }
 
     // MODIFIES: this
     // EFFECTS: adds a panel that houses the constraint list and settings
     private void addConstraintPanel() {
+        constraintPanel = new JPanel();
+        constraintPanel.setBounds(30, 160, 600, 350);
+        constraintPanel.setLayout(new BoxLayout(constraintPanel, BoxLayout.Y_AXIS));
+        constraintPanel.setVisible(true);
+        constraintPanel.setBackground(Color.LIGHT_GRAY);
+        
 
+
+        
+        this.add(constraintPanel);
     }
 
     // EFFECTS: initializes the window of the UI to house other components
