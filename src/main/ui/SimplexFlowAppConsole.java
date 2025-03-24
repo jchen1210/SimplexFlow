@@ -12,9 +12,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
 
-// Simplex learner application
+// **DEPRECATED**
+// Simplex Flow Application with console based UI
 // The methods relating to data persistence are attributeable to the JsonSerializationDemo provided
-public class SimplexLearnerApp {
+public class SimplexFlowAppConsole {
     private static final String JSON_STORE = "./data/save.json";
     private Scanner input;
     private LinearProgram lp;
@@ -24,7 +25,7 @@ public class SimplexLearnerApp {
     private JsonReader jsonReader;
 
     // EFFECTS: runs the Simplex learner app
-    public SimplexLearnerApp() {
+    public SimplexFlowAppConsole() {
         solutionStage = false;
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
