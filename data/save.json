@@ -2,31 +2,12 @@
     "objectiveFunction": {
         "numVariables": 3,
         "coefficients": [
-            5,
-            1,
-            3
+            0,
+            0,
+            0
         ],
-        "constantTerm": 0
+        "constantTerm": 1
     },
     "numVariables": 3,
-    "constraints": [
-        {
-            "numVariables": 3,
-            "coefficients": [
-                1,
-                2,
-                3
-            ],
-            "constantTerm": 4
-        },
-        {
-            "numVariables": 3,
-            "coefficients": [
-                -3,
-                2.5,
-                0
-            ],
-            "constantTerm": 6
-        }
-    ]
+    "constraints": []
 }

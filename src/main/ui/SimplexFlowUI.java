@@ -11,9 +11,7 @@ import java.io.IOException;
 
 import javax.swing.*;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -33,6 +31,7 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
     private JPanel loadPanel;
     private JPanel objPanel;
     private JPanel constraintPanel;
+    private JScrollPane constraintsList;
 
     private JButton loadButton;
     private JButton skipLoadButton;
@@ -46,6 +45,8 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
     private JTextField numVarTextField;
     private JTextField objCoeffsField;
     private JTextField objConstantField;
+    private JTextField constraintCoeffsField;
+    private JTextField constraintConstantField;
 
     // EFFECTS: runs the UI of the SimplexFlow app
     public SimplexFlowUI() {
@@ -131,17 +132,23 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
     // MODIFIES: this
     // EFFECTS: adds a panel that houses the constraint list and settings
     private void addConstraintPanel() {
-        constraintPanel = new JPanel();
-        constraintPanel.setBounds(30, 160, 600, 350);
-        constraintPanel.setLayout(null);
-        constraintPanel.setVisible(true);
-        constraintPanel.setBackground(Color.LIGHT_GRAY);
+        if (constraintPanel != null) {
+            constraintPanel.removeAll();
+        } else {
+            constraintPanel = new JPanel();
+            constraintPanel.setBounds(30, 160, 600, 350);
+            constraintPanel.setLayout(null);
+            constraintPanel.setVisible(true);
+            constraintPanel.setBackground(Color.LIGHT_GRAY);
+        }
         
         JLabel title = new JLabel("Constraints:");
         title.setBounds(5, 5, 200, 20);
         constraintPanel.add(title);
 
         addConstraintsList();
+
+        addConstraintTextFields();
 
         addAddConstraintButton();
         addClearConstraintsButton();
@@ -150,14 +157,38 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
     }
 
     // MODIFIES: this
+    // EFFECTS: adds a panel that has text fields for entering numbers to create a new constraint
+    // to the constraint panel
+    private void addConstraintTextFields() {
+        JPanel addConstraintFields = new JPanel();
+        addConstraintFields.setLayout(new GridLayout(2, 2, 5, 0));
+        addConstraintFields.setVisible(true);
+        addConstraintFields.setBackground(Color.LIGHT_GRAY);
+        addConstraintFields.setBounds(5, 225, 400, 60);
+
+        addConstraintFields.add(new JLabel("Constraint coefficients as a csv: "));
+        addConstraintFields.add(new JLabel("Constant term: "));
+        constraintCoeffsField = makeSmallTextField(addConstraintFields);
+        constraintConstantField = makeSmallTextField(addConstraintFields);
+
+        constraintPanel.add(addConstraintFields);
+        constraintPanel.revalidate();
+        constraintPanel.repaint();
+    }
+
+    // MODIFIES: this
     // EFFECTS: adds a panel with each individual constraint inside of it to the constraint panel
     private void addConstraintsList() {
-        JPanel constraintsList = new JPanel();
-        constraintsList.setBounds(15, 25, 600, 200);
-        constraintsList.setLayout(null);
-        constraintsList.setVisible(true);
-        constraintsList.setBackground(Color.LIGHT_GRAY);
-
+        if (constraintsList != null) {
+            constraintsList.removeAll();
+        } else {
+            constraintsList = new JScrollPane();
+            constraintsList.setBounds(15, 25, 570, 200);
+            constraintsList.setLayout(null);
+            constraintsList.setVisible(true);
+            constraintsList.setBackground(Color.LIGHT_GRAY);
+        }
+        
         int step = 15;
         for (int i = 0; i < lp.constraintsToStrings().size(); i++) {
             String s = lp.constraintsToStrings().get(i);
@@ -276,18 +307,52 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
             doSave();
         } else if (source == overwriteButton) {
             overwriteObjF();
+        } else if (source == clearConstraintsButton) {
+            clearConstraints();
+        } else if (source == addConstraintButton) {
+            doAddConstraint();
         }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: adds a constraint to the lp using data from the 2 relevant text fields
+    private void doAddConstraint() {
+        Constraint c = new Constraint(lp.getNumVariables());
+        c.setConstantTerm(Double.parseDouble(constraintConstantField.getText()));
+        c.setCoefficients(csvToArray(constraintCoeffsField.getText()));
+
+        lp.addConstraint(c);
+
+        constraintCoeffsField.setText("");
+        constraintConstantField.setText("");
+
+        addConstraintsList();
+
+        constraintPanel.revalidate();
+        constraintPanel.repaint();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: clears the constraints of the lp and updates UI
+    private void clearConstraints() {
+        lp.getConstraints().clear();
+        addConstraintPanel();
+        constraintPanel.revalidate();
+        constraintPanel.repaint();
     }
 
     // MODIFIES: this
     // EFFECTS: overwrites the OBF with the inputs in the relevant text fields
     private void overwriteObjF() {
         ObjectiveFunction objF = lp.getObjF();
-        objF.setConstantTerm(Integer.parseInt(objConstantField.getText()));
+        objF.setConstantTerm(Double.parseDouble(objConstantField.getText()));
         objF.setCoefficients(csvToArray(objCoeffsField.getText()));
 
         JLabel objFunctionLabel = (JLabel) objPanel.getComponent(1);
         objFunctionLabel.setText(lp.getObjF().toString());
+
+        objCoeffsField.setText("");
+        objConstantField.setText("");
 
         objPanel.revalidate();
         objPanel.repaint();
@@ -299,15 +364,19 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
         loadButton.setVisible(false);
         skipLoadButton.setVisible(false);
 
+        JLabel instructions = new JLabel("Enter the number of variables in your LP");
+        instructions.setBounds(75, 50, 250, 30);
+        loadPanel.add(instructions);
+
         numVarTextField = new JTextField();
-        numVarTextField.setBounds(100, 50, 200, 30);
+        numVarTextField.setBounds(100, 100, 200, 30);
         loadPanel.add(numVarTextField);
 
         loadPanel.revalidate();
         loadPanel.repaint();
 
         submitNumVarButton = new JButton("Submit");
-        submitNumVarButton.setBounds(150, 100, 100, 40);
+        submitNumVarButton.setBounds(150, 150, 100, 40);
         submitNumVarButton.addActionListener(this);
 
         loadPanel.add(submitNumVarButton);
