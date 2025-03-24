@@ -37,7 +37,7 @@ As a user, I want to be able to:
 Clicking the "add constraint" button to be prompted to add a new constraint to the LP
 - You can generate the second required action related to the user story "adding multiple Xs to a Y" by...
 
-Clicking the "X" button next to any constraint in the LP menu to delete it
+Clicking the "Delete all constraints" button to clear the list of constraints
 - You can locate my visual component by...
 
 Looking at the load menu which is displayed upon application startup
