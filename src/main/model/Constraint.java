@@ -31,7 +31,7 @@ public class Constraint implements Writeable {
     // EFFECTS: sets the constant term to c
     public void setConstantTerm(double c) {
         constantTerm = c;
-        EventLog.getInstance().logEvent(new Event("Set constant term to " + c));
+        EventLog.getInstance().logEvent(new Event("Set constant term to " + c + " for constraint"));
     }
 
     // REQUIRES: coeffs.length = numVariables
@@ -39,7 +39,8 @@ public class Constraint implements Writeable {
     // EFFECTS: sets the coefficients to coeffs
     public void setCoefficients(double[] coeffs) {
         coefficients = coeffs;
-        EventLog.getInstance().logEvent(new Event("Set coefficients to " + Arrays.toString(coeffs)));
+        EventLog.getInstance()
+                .logEvent(new Event("Set coefficients to " + Arrays.toString(coeffs) + " for constraint"));
     }
 
     // REQUIRES: solution.length = numVariables

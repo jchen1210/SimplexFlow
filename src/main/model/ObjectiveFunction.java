@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Arrays;
+
 import org.json.JSONObject;
 import persistence.Writeable;
 
@@ -11,6 +13,7 @@ public class ObjectiveFunction implements Writeable {
     private double[] coefficients;
     private double constantTerm;
 
+    // MODIFIES: this, eventLog
     // REQUIRES: n >= 1
     // EFFECTS: creates an objective function with n variables
     // (and thus n coefficients) where all coefficients and the constantTerm are
@@ -19,19 +22,23 @@ public class ObjectiveFunction implements Writeable {
         numVariables = n;
         coefficients = new double[n];
         constantTerm = 0;
+        EventLog.getInstance().logEvent(new Event("Created new OBF with " + n + " variables"));
     }
 
-    // MODIFIES: this
+    // MODIFIES: this, eventLog
     // EFFECTS: sets the constant term to c
     public void setConstantTerm(double c) {
         constantTerm = c;
+        EventLog.getInstance().logEvent(new Event("Set constant term to " + c + " for OBF"));
     }
 
     // REQUIRES: coeffs.length = numVariables
-    // MODIFIES: this
+    // MODIFIES: this, eventLog
     // EFFECTS: sets the coefficients to coeffs
     public void setCoefficients(double[] coeffs) {
         coefficients = coeffs;
+        EventLog.getInstance()
+                .logEvent(new Event("Set coefficients to " + Arrays.toString(coeffs) + " for OBF"));
     }
 
     // REQUIRES: solution.length = numVariables
@@ -83,7 +90,7 @@ public class ObjectiveFunction implements Writeable {
         json.put("numVariables", numVariables);
         json.put("coefficients", coefficients);
         json.put("constantTerm", constantTerm);
-        
+
         return json;
     }
 

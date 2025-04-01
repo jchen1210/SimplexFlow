@@ -15,6 +15,7 @@ public class LinearProgram implements Writeable {
     private ArrayList<Constraint> constraints;
     private ObjectiveFunction objectiveFunction;
 
+    // MODIFIES: this, eventLog
     // REQUIRES: n >= 1
     // EFFECTS: creates a linear program with n variables,
     // empty list of constraints, and objective function of zeroes
@@ -22,27 +23,31 @@ public class LinearProgram implements Writeable {
         numVariables = n;
         constraints = new ArrayList<Constraint>();
         objectiveFunction = new ObjectiveFunction(n);
+        EventLog.getInstance().logEvent(new Event("Created new LP with " + n + " variables"));
     }
 
     // REQUIRES: objF.getNumVariables() = getNumVariables()
-    // MODIFIES: this
+    // MODIFIES: this, eventLog
     // EFFECTS: sets the objective function to objF
     public void setObjF(ObjectiveFunction objF) {
         objectiveFunction = objF;
+        EventLog.getInstance().logEvent(new Event("Successfully updated OBF"));
     }
 
     // REQUIRES: constraint.getNumVariables() = getNumVariables()
-    // MODIFIES: this
+    // MODIFIES: this, eventLog
     // EFFECTS: adds a given constraint to the list of constraints
     public void addConstraint(Constraint constraint) {
         constraints.add(constraint);
+        EventLog.getInstance().logEvent(new Event("Successfully added constraint"));
     }
 
     // REQUIRES: 1 <= i <= constraints.size()
-    // MODIFIES: this
+    // MODIFIES: this, eventLog
     // EFFECTS: deletes a constraint at index i in constraints in 1-based indexing
     public void deleteConstraint(int i) {
         constraints.remove(i - 1);
+        EventLog.getInstance().logEvent(new Event("Successfully deleted constraint (" + i + ")"));
     }
 
     // REQUIRES: solution.length = numVariables

@@ -325,7 +325,7 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
     // EFFECTS: prints event log to console
     private void printLog(EventLog el) {
         for (Event e : el) {
-            System.out.println(e.toString());
+            System.out.println(e.toString() + "\n");
         }
     }
 
@@ -350,7 +350,10 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
     // MODIFIES: this
     // EFFECTS: clears the constraints of the lp and updates UI
     private void clearConstraints() {
-        lp.getConstraints().clear();
+        int n = lp.getConstraints().size();
+        for (int i = n; i >= 1; i--) {
+            lp.deleteConstraint(i);
+        }
         addConstraintPanel();
         constraintPanel.revalidate();
         constraintPanel.repaint();
@@ -359,9 +362,11 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
     // MODIFIES: this
     // EFFECTS: overwrites the OBF with the inputs in the relevant text fields
     private void overwriteObjF() {
-        ObjectiveFunction objF = lp.getObjF();
+        ObjectiveFunction objF = new ObjectiveFunction(lp.getNumVariables());
         objF.setConstantTerm(Double.parseDouble(objConstantField.getText()));
         objF.setCoefficients(csvToArray(objCoeffsField.getText()));
+
+        lp.setObjF(objF);
 
         JLabel objFunctionLabel = (JLabel) objPanel.getComponent(1);
         objFunctionLabel.setText(lp.getObjF().toString());
