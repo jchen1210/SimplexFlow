@@ -83,3 +83,49 @@ This is just a simple example of a problem faced in linear programming, but in g
 **Feasible/Infeasible** - A solution (allocation of variables) is feasible if it satisfies all constraints. Otherwise, it is infeasible.
 
 **Optimal solution** - The allocation of variables that maximizes the objective function while remaining feasible.
+
+## Phase 4: Task 2
+
+Sample EventLog:
+
+Tue Apr 01 04:26:46 PDT 2025
+Created new OBF with 3 variables
+
+Tue Apr 01 04:26:46 PDT 2025
+Created new LP with 3 variables
+
+Tue Apr 01 04:26:53 PDT 2025
+Created constraint with 3 variables.
+
+Tue Apr 01 04:26:53 PDT 2025
+Set constant term to 4.0 for constraint
+
+Tue Apr 01 04:26:53 PDT 2025
+Set coefficients to [1.0, 2.0, 3.0] for constraint
+
+Tue Apr 01 04:26:53 PDT 2025
+Successfully added constraint
+
+Tue Apr 01 04:26:59 PDT 2025
+Created constraint with 3 variables.
+
+Tue Apr 01 04:26:59 PDT 2025
+Set constant term to 8.0 for constraint
+
+Tue Apr 01 04:26:59 PDT 2025
+Set coefficients to [3.0, 2.0, 1.0] for constraint
+
+Tue Apr 01 04:26:59 PDT 2025
+Successfully added constraint
+
+Tue Apr 01 04:27:08 PDT 2025
+Created new OBF with 3 variables
+
+Tue Apr 01 04:27:08 PDT 2025
+Set constant term to 16.0 for OBF
+
+Tue Apr 01 04:27:08 PDT 2025
+Set coefficients to [1.0, -2.0, 3.0] for OBF
+
+Tue Apr 01 04:27:08 PDT 2025
+Successfully updated OBF
