@@ -129,3 +129,7 @@ Set coefficients to [1.0, -2.0, 3.0] for OBF
 
 Tue Apr 01 04:27:08 PDT 2025
 Successfully updated OBF
+
+## Phase 4: Task 3
+
+Given more time to work on this project, I would have abstracted away some of the details of the ObjectiveFunction and Constraint to an abstract superclass LinearForm that is extended by the 2. Both ObjectiveFunction and Constraint are fundamentally just linear equations where a vector of numbers is "plugged in" and a result is given; an inequality constraint just happens to compare this result against some prescribed constant. As such, there is a fair amount of code duplication between the 2 classes in terms of construction, fields, and actual computation of value for a given vector. An abstract class would be perfect to address this repetition!
