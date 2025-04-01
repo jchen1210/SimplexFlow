@@ -13,6 +13,7 @@ public class Constraint implements Writeable {
     private double[] coefficients;
     private int numVariables;
 
+    // MODIFIES: this, eventLog
     // REQUIRES: n >= 1
     // EFFECTS: creates a constraint with n variables (and thus n coefficients)
     // where all coefficients and the constantTerm are zeroes
@@ -20,20 +21,23 @@ public class Constraint implements Writeable {
         numVariables = n;
         coefficients = new double[n];
         constantTerm = 0;
+        EventLog.getInstance().logEvent(new Event("Created constraint with " + numVariables + " variables."));
     }
 
     // REQUIRES: c >= 0
-    // MODIFIES: this
+    // MODIFIES: this, eventLog
     // EFFECTS: sets the constant term to c
     public void setConstantTerm(double c) {
         constantTerm = c;
+        EventLog.getInstance().logEvent(new Event("Set constant term to " + c));
     }
 
     // REQUIRES: coeffs.length = numVariables
-    // MODIFIES: this
+    // MODIFIES: this, eventLog
     // EFFECTS: sets the coefficients to coeffs
     public void setCoefficients(double[] coeffs) {
         coefficients = coeffs;
+        EventLog.getInstance().logEvent(new Event("Set coefficients to " + coeffs));
     }
 
     // REQUIRES: solution.length = numVariables
