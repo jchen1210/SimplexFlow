@@ -2,6 +2,8 @@ package ui;
 
 import model.ObjectiveFunction;
 import model.Constraint;
+import model.Event;
+import model.EventLog;
 import model.LinearProgram;
 import persistence.JsonReader;
 import persistence.JsonWriter;
@@ -307,6 +309,7 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
         } else if (source == submitNumVarButton) {
             createLP();
         } else if (source == quitButton) {
+            printLog(EventLog.getInstance());
             System.exit(0);
         } else if (source == saveButton) {
             doSave();
@@ -316,6 +319,13 @@ public class SimplexFlowUI extends JFrame implements ActionListener {
             clearConstraints();
         } else if (source == addConstraintButton) {
             doAddConstraint();
+        }
+    }
+    
+    // EFFECTS: prints event log to console
+    private void printLog(EventLog el) {
+        for (Event e : el) {
+            System.out.println(e.toString());
         }
     }
 

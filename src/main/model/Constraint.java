@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Arrays;
+
 import org.json.JSONObject;
 import persistence.Writeable;
 
@@ -37,7 +39,7 @@ public class Constraint implements Writeable {
     // EFFECTS: sets the coefficients to coeffs
     public void setCoefficients(double[] coeffs) {
         coefficients = coeffs;
-        EventLog.getInstance().logEvent(new Event("Set coefficients to " + coeffs));
+        EventLog.getInstance().logEvent(new Event("Set coefficients to " + Arrays.toString(coeffs)));
     }
 
     // REQUIRES: solution.length = numVariables
